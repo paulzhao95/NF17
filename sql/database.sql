@@ -94,7 +94,8 @@ CREATE TABLE "Exception"
     CONSTRAINT "Planning_fkey" FOREIGN KEY ("Planning")
         REFERENCES "Planning" ("Nom") MATCH SIMPLE,
     CONSTRAINT "DateDebut_DateFin_key" UNIQUE ("Planning", "DateDebut", "DateFin"),
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0),
+    CONSTRAINT "overlapingExceptions" CHECK ("areExceptionsOverlaping"("DateDebut","DateFin")=0)
 );
 
 CREATE TABLE "Trajet"
@@ -273,3 +274,27 @@ BEGIN
     AND "Trajet"."Planning" = ANY("trouverPlanning"(jour));
 END
 $BODY$;
+
+
+
+CREATE OR REPLACE FUNCTION "areExceptionsOverlaping"(
+  DateDebut Date,
+  DateFin Date
+)
+RETURNS int
+LANGUAGE 'plpgsql'
+AS $BODY$
+
+DECLARE
+  Result int;
+BEGIN
+  Result:=0;
+  IF EXISTS(SELECT * FROM "Exception" e WHERE NOT ((e."DateDebut"<DateDebut and e."DateFin"<DateDebut) or (e."DateDebut">DateFin and e."DateFin" > DateFin)))
+	THEN
+	Result := 1;
+	END IF;
+  RETURN Result;
+END
+$BODY$;
+
+

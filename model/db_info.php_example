@@ -1,0 +1,8 @@
+<?php 
+// This is an example file. If you want to use it, consider making a copy (cp db_info.php_example db_info.php) and modifying the copy.
+$db_info['driver']='pgsql'; // You should ALWAYS use Postgres. We do not guarantee that this application will be fully functionnal with another RDBMS
+$db_info['host']='';
+$db_info['port']='';
+$db_info['base']='';
+$db_info['user']='';
+$db_info['password']='';

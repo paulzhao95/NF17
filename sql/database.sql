@@ -336,7 +336,7 @@ BEGIN
     
     SELECT COUNT("Id") INTO places_prises2
     FROM "Billet"
-    WHERE "Trajet" = numTrain
+    WHERE "Trajet"."Id" = numTrain
     AND "Date" = jour
     AND "Classe" = 2;
     

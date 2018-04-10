@@ -95,6 +95,7 @@ CREATE TABLE "Exception"
         REFERENCES "Planning" ("Nom") MATCH SIMPLE,
     CONSTRAINT "DateDebut_DateFin_key" UNIQUE ("Planning", "DateDebut", "DateFin"),
     CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0),
+    CONSTRAINT "DateDebutInferieurDateFin" CHECK ("DateDebut"<="DateFin"),
     CONSTRAINT "overlapingExceptions" CHECK ("areExceptionsOverlaping"("DateDebut","DateFin")=0)
 );
 

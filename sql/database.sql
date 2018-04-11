@@ -94,6 +94,7 @@ CREATE TABLE "Exception"
     CONSTRAINT "Planning_fkey" FOREIGN KEY ("Planning")
         REFERENCES "Planning" ("Nom") MATCH SIMPLE,
     CONSTRAINT "DateDebut_DateFin_key" UNIQUE ("Planning", "DateDebut", "DateFin"),
+    CONSTRAINT "DateDebutInferieurDateFin" CHECK ("DateDebut"<="DateFin"),
     CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0),
     CONSTRAINT "overlapingExceptions" CHECK ("areExceptionsOverlaping"("DateDebut","DateFin")=0)
 );
@@ -319,7 +320,7 @@ BEGIN
     ON "Trajet"."Ligne" = "Ligne"."Id"
     INNER JOIN "TypeTrain"
     ON "Ligne"."TypeTrain" = "TypeTrain"."Nom"
-    WHERE "Trajet" = numTrain;
+    WHERE "Trajet"."Id" = numTrain;
     
     SELECT COUNT("Id") INTO places_prises1
     FROM "Billet"
@@ -332,7 +333,7 @@ BEGIN
     ON "Trajet"."Ligne" = "Ligne"."Id"
     INNER JOIN "TypeTrain"
     ON "Ligne"."TypeTrain" = "TypeTrain"."Nom"
-    WHERE "Trajet" = numTrain;
+    WHERE "Trajet"."Id" = numTrain;
     
     SELECT COUNT("Id") INTO places_prises2
     FROM "Billet"

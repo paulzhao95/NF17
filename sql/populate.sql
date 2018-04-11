@@ -42,3 +42,28 @@ INSERT INTO "Trajet" ("Id", "Ligne", "HeureDepart", "HeureArrivee", "PrixPrem", 
 (3, 10, '19:00:00', '19:41:00', 015.00, 013.00, 'Jours ouvres'),
 (4, 9, '19:16:00', '19:58:00', 015.00, 013.00, 'Jours ouvres')
 ;
+
+INSERT INTO "Voyageur" ("idVoyageur", "nom", "prenom", "numeroTel", "numeroCarte", "ville", "adresse", "typeVoyageur") VALUES
+(1, 'Zhao', 'Paul', '0605040302', '001234567890', 'Compiegne', (1, 'rue de la Joie'), 'Or'),
+(2, 'Sabbagh', 'Guillaume', '0123456789', '314159265358', 'Compiegne', (12, 'place du Bonheur'), 'Argent'),
+(3, 'Delabre', 'Martin', '0607080910', NULL, 'Compiegne', (7, 'avenue du Sourire'), 'Occasionnel'),
+(4, 'Dubosc', 'Bertille', '0711235813', NULL, 'Compiegne', (88, 'boulevard du Chocolat'), 'Occasionnel')
+;
+
+INSERT INTO "Reservation" ("Id", "Voyageur", "Assurance", "MoyenPaiement") VALUES
+(1, 4, false, 'carte_bleue'),
+(2, 3, false, 'especes'),
+(3, 1, true, 'cheque')
+;
+
+INSERT INTO "Billet" ("Id", "Trajet", "Date", "Classe", "Place", "Annule", "Reservation") VALUES
+(1, 1, '2018-06-22', '2', 8, false, 1),
+(2, 1, '2018-06-22', '2', 9, false, 1),
+(3, 1, '2018-06-22', '2', 10, false, 1),
+(4, 1, '2018-06-22', '2', 11, false, 1),
+(5, 1, '2018-06-22', '2', 23, false, 2),
+(6, 1, '2018-06-22', '2', 24, false, 2),
+(7, 1, '2018-06-22', '2', 104, false, 3),
+(8, 1, '2018-06-22', '2', 105, false, 3),
+(9, 1, '2018-06-22', '2', 106, false, 3)
+;

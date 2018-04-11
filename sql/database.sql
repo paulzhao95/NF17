@@ -326,7 +326,7 @@ BEGIN
     FROM "Billet"
     WHERE "Trajet" = numTrain
     AND "Date" = jour
-    AND "Classe" = 1;
+    AND "Classe" = '1';
     
     SELECT "nbPlacesSec" INTO places_total2
     FROM "Trajet" INNER JOIN "Ligne"
@@ -337,9 +337,9 @@ BEGIN
     
     SELECT COUNT("Id") INTO places_prises2
     FROM "Billet"
-    WHERE "Trajet"."Id" = numTrain
+    WHERE "Trajet" = numTrain
     AND "Date" = jour
-    AND "Classe" = 2;
+    AND "Classe" = '2';
     
     RETURN QUERY SELECT places_total1-places_prises1, places_total2-places_prises2;
 

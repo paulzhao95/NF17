@@ -29,7 +29,6 @@ INSERT INTO "Ligne" ("Id", "NomGareDep", "VilleGareDep", "NomGareArr", "VilleGar
 (10, 'Gare de Compiegne', 'Compiegne', 'Gare du Nord', 'Paris', 'Intercites')
 ;
 
-
 INSERT INTO "Planning" ("Nom", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche") VALUES
 ('Tous les jours', true, true, true, true, true, true, true),
 ('Jours ouvres', true, true, true, true, true, false, false),

@@ -28,46 +28,73 @@ RETURNS integer[]
 AS $BODY$
 DECLARE
     jour_semaine integer;
-    plannings_ok integer[];
+    plannings_ok varchar[];
+    plannings_pasok[];
 
 BEGIN
     jour_semaine := extract(isodow from jour);
     
+    SELECT array_agg("Planning") INTO plannings_ok
+    FROM "Exceptions"
+    WHERE "DateDebut" <= date
+    AND "DateFin" >= date
+    AND "Ajout" = true;
+    
+    SELECT array_agg("Planning") INTO plannings_pasok
+    FROM "Exceptions"
+    WHERE "DateDebut" <= date
+    AND "DateFin" >= date
+    AND "Ajout" = false;
+    
     CASE jour_semaine
     WHEN 1 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Lundi" = true;
+        WHERE "Lundi" = true
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);  -- pour ne pas avoir de doublons
         
     WHEN 2 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Mardi" = true;
+        WHERE "Mardi" = true
+		AND "Nom" <> ANY(plannings_pasok)
+		AND "Nom" <> ANY(plannings_ok);
         
     WHEN 3 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Mercredi" = true;
+        WHERE "Mercredi" = true
+		AND "Nom" <> ANY(plannings_pasok)
+		AND "Nom" <> ANY(plannings_ok);
         
     WHEN 4 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Jeudi" = true;
+        WHERE "Jeudi" = true
+		AND "Nom" <> ANY(plannings_pasok)
+		AND "Nom" <> ANY(plannings_ok);
         
     WHEN 5 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Vendredi" = true;
+        WHERE "Vendredi" = true
+		AND "Nom" <> ANY(plannings_pasok)
+		AND "Nom" <> ANY(plannings_ok);
         
     WHEN 6 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Samedi" = true;
+        WHERE "Samedi" = true
+		AND "Nom" <> ANY(plannings_pasok)
+		AND "Nom" <> ANY(plannings_ok);
         
     WHEN 7 THEN
-        SELECT array_agg("Id") INTO plannings_ok
+        SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
-        WHERE "Dimanche" = true;
+        WHERE "Dimanche" = true
+		AND "Nom" <> ANY(plannings_pasok)
+		AND "Nom" <> ANY(plannings_ok);
         
     END CASE;
     

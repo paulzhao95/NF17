@@ -21,15 +21,16 @@ BEGIN
 END
 $BODY$;
 
+
 CREATE OR REPLACE FUNCTION "trouverPlanning"(
-	jour date)
+    jour date)
 RETURNS integer[]
     LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE
     jour_semaine integer;
     plannings_ok varchar[];
-    plannings_pasok[];
+    plannings_pasok varchar[];
 
 BEGIN
     jour_semaine := extract(isodow from jour);
@@ -58,43 +59,43 @@ BEGIN
         SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
         WHERE "Mardi" = true
-		AND "Nom" <> ANY(plannings_pasok)
-		AND "Nom" <> ANY(plannings_ok);
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);
         
     WHEN 3 THEN
         SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
         WHERE "Mercredi" = true
-		AND "Nom" <> ANY(plannings_pasok)
-		AND "Nom" <> ANY(plannings_ok);
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);
         
     WHEN 4 THEN
         SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
         WHERE "Jeudi" = true
-		AND "Nom" <> ANY(plannings_pasok)
-		AND "Nom" <> ANY(plannings_ok);
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);
         
     WHEN 5 THEN
         SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
         WHERE "Vendredi" = true
-		AND "Nom" <> ANY(plannings_pasok)
-		AND "Nom" <> ANY(plannings_ok);
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);
         
     WHEN 6 THEN
         SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
         WHERE "Samedi" = true
-		AND "Nom" <> ANY(plannings_pasok)
-		AND "Nom" <> ANY(plannings_ok);
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);
         
     WHEN 7 THEN
         SELECT array_agg("Nom") INTO plannings_ok
         FROM "Planning"
         WHERE "Dimanche" = true
-		AND "Nom" <> ANY(plannings_pasok)
-		AND "Nom" <> ANY(plannings_ok);
+        AND "Nom" <> ANY(plannings_pasok)
+        AND "Nom" <> ANY(plannings_ok);
         
     END CASE;
     
@@ -105,6 +106,7 @@ BEGIN
     RETURN plannings_ok;
 END
 $BODY$;
+
 
 CREATE OR REPLACE FUNCTION "trouverTrajet"(
 	villeD varchar,

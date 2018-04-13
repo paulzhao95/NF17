@@ -1,4 +1,4 @@
-INSERT INTO "TypeTrain" ("Nom", "nbPlacesPrem", "nbPlacesSec", "vitesseMax") VALUES 
+INSERT INTO "TypeTrain" ("Nom", "nbPlacesPrem", "nbPlacesSec", "vitesseMax") VALUES
 ('Petit TER', 0, 452, 160),
 ('Grand TER', 60, 744, 160),
 ('Intercites', 210, 1008, 200),
@@ -16,7 +16,7 @@ INSERT INTO "Gare" ("Nom", "Adresse", "Ville", "ZoneHor") VALUES
 ('Lyon Part-Dieu', '5 place Charles Beraudier', 'Lyon', 'UTC+2')
 ;
 
-INSERT INTO "Ligne" ("NomGareDep", "VilleGareDep", "NomGareArr", "VilleGareArr", "TypeTrain") VALUES 
+INSERT INTO "Ligne" ("NomGareDep", "VilleGareDep", "NomGareArr", "VilleGareArr", "TypeTrain") VALUES
 ('Gare du Nord', 'Paris', 'Gare de Compiegne', 'Compiegne', 'Grand TER'),
 ('Gare de Compiegne', 'Compiegne', 'Gare du Nord', 'Paris', 'Grand TER'),
 ('Gare du Nord', 'Paris', 'Gare de Maubeuge', 'Maubeuge', 'Intercites'),
@@ -33,6 +33,12 @@ INSERT INTO "Planning" ("Nom", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"
 ('Tous les jours', true, true, true, true, true, true, true),
 ('Jours ouvres', true, true, true, true, true, false, false),
 ('Week end', false, false, false, false, false, true, true)
+;
+
+INSERT INTO "Exception" ("Nom", "Ajoute", "Planning", "DateDebut", "DateFin") VALUES
+('Vacances printemps 2018', true, 'Week end', '2018-04-14', '2018-04-29'),
+('Vacances été 2018', true, 'Week end', '2018-06-30', '2018-09-01'),
+('Grève mai 2018', false, 'Jours ouvres', '2018-05-01', '2018-05-08')
 ;
 
 INSERT INTO "Trajet" ("Ligne", "HeureDepart", "HeureArrivee", "PrixPrem", "PrixSec", "Planning") VALUES

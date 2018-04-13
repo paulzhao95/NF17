@@ -5,178 +5,180 @@ CREATE TYPE "Adresse" AS
 );
 
 CREATE TYPE "Classe" AS ENUM
-    ('1', '2');
-    
+('1', '2');
+
 CREATE TYPE "MoyenPaiement" AS ENUM
-    ('especes', 'cheque', 'carte_bleue');
-    
+('especes', 'cheque', 'carte_bleue');
+
 CREATE TYPE "StatutVoyageur" AS ENUM
-    ('Occasionnel', 'Argent', 'Or', 'Platine');
+('Occasionnel', 'Argent', 'Or', 'Platine');
 
 
 
 CREATE TABLE "Gare"
 (
-    "Nom" varchar NOT NULL,
-    "Adresse" varchar NOT NULL,
-    "Ville" varchar NOT NULL,
-    "ZoneHor" varchar NOT NULL,
-    CONSTRAINT "Gare_pkey" PRIMARY KEY ("Nom", "Ville")
+	"Nom" varchar NOT NULL,
+	"Adresse" varchar NOT NULL,
+	"Ville" varchar NOT NULL,
+	"ZoneHor" varchar NOT NULL,
+	CONSTRAINT "Gare_pkey" PRIMARY KEY ("Nom", "Ville")
 );
 
 CREATE TABLE "Hotel"
 (
-    "Nom" varchar NOT NULL,
-    "Adresse" varchar NOT NULL,
-    "Ville" varchar NOT NULL,
-    "Gare" varchar,
-    "PrixNuit" integer,
-    CONSTRAINT "Hotel_pkey" PRIMARY KEY ("Nom", "Ville"),
-    CONSTRAINT "Adresse_Ville_key" UNIQUE ("Adresse", "Ville"),
-    CONSTRAINT "Gare_Ville_fkey" FOREIGN KEY ("Gare", "Ville")
-        REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
-    CONSTRAINT "PrixNuit_pos" CHECK ("PrixNuit" > 0)
+	"Nom" varchar NOT NULL,
+	"Adresse" varchar NOT NULL,
+	"Ville" varchar NOT NULL,
+	"Gare" varchar,
+	"PrixNuit" integer,
+	CONSTRAINT "Hotel_pkey" PRIMARY KEY ("Nom", "Ville"),
+	CONSTRAINT "Adresse_Ville_key" UNIQUE ("Adresse", "Ville"),
+	CONSTRAINT "Gare_Ville_fkey" FOREIGN KEY ("Gare", "Ville")
+	REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
+	CONSTRAINT "PrixNuit_pos" CHECK ("PrixNuit" > 0)
 );
 
 CREATE TABLE "TypeTrain"
 (
-    "Nom" varchar(20) PRIMARY KEY,
-    "nbPlacesPrem" integer NOT NULL,
-    "nbPlacesSec" integer NOT NULL,
-    "vitesseMax" integer NOT NULL,
-    CONSTRAINT "nbPlacesPrem_pos" CHECK ("nbPlacesPrem" >= 0),
-    CONSTRAINT "nbPlacesSec_pos" CHECK ("nbPlacesSec" > 0),
-    CONSTRAINT "vitesseMax_pos" CHECK ("vitesseMax" > 0)
+	"Nom" varchar PRIMARY KEY,
+	"nbPlacesPrem" integer NOT NULL,
+	"nbPlacesSec" integer NOT NULL,
+	"vitesseMax" integer NOT NULL,
+	CONSTRAINT "nbPlacesPrem_pos" CHECK ("nbPlacesPrem" >= 0),
+	CONSTRAINT "nbPlacesSec_pos" CHECK ("nbPlacesSec" > 0),
+	CONSTRAINT "vitesseMax_pos" CHECK ("vitesseMax" > 0)
 );
 
 CREATE TABLE "Ligne"
 (
-    "Id" serial PRIMARY KEY,
-    "NomGareDep" varchar,
-    "VilleGareDep" varchar,
-    "NomGareArr" varchar,
-    "VilleGareArr" varchar,
-    "TypeTrain" varchar,
-    CONSTRAINT "Donnees_uniques" UNIQUE ("NomGareDep", "VilleGareDep", "NomGareArr", "VilleGareArr", "TypeTrain"),
-    CONSTRAINT "GareArr_fkey" FOREIGN KEY ("NomGareArr", "VilleGareArr")
-        REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
-    CONSTRAINT "GareDep_fkey" FOREIGN KEY ("NomGareDep", "VilleGareDep")
-        REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
-    CONSTRAINT "Ligne_TypeTrain_fkey" FOREIGN KEY ("TypeTrain")
-        REFERENCES "TypeTrain" ("Nom") MATCH SIMPLE,
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+	"Id" serial PRIMARY KEY,
+	"NomGareDep" varchar,
+	"VilleGareDep" varchar,
+	"NomGareArr" varchar,
+	"VilleGareArr" varchar,
+	"TypeTrain" varchar,
+	CONSTRAINT "Donnees_uniques" UNIQUE ("NomGareDep", "VilleGareDep", "NomGareArr", "VilleGareArr", "TypeTrain"),
+	CONSTRAINT "GareArr_fkey" FOREIGN KEY ("NomGareArr", "VilleGareArr")
+	REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
+	CONSTRAINT "GareDep_fkey" FOREIGN KEY ("NomGareDep", "VilleGareDep")
+	REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
+	CONSTRAINT "Ligne_TypeTrain_fkey" FOREIGN KEY ("TypeTrain")
+	REFERENCES "TypeTrain" ("Nom") MATCH SIMPLE,
+	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 CREATE TABLE "Planning"
 (
-    "Nom" varchar PRIMARY KEY,
-    "Lundi" boolean NOT NULL,
-    "Mardi" boolean NOT NULL,
-    "Mercredi" boolean NOT NULL,
-    "Jeudi" boolean NOT NULL,
-    "Vendredi" boolean NOT NULL,
-    "Samedi" boolean NOT NULL,
-    "Dimanche" boolean NOT NULL,
-    CONSTRAINT "Donnees_key" UNIQUE ("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
+	"Nom" varchar PRIMARY KEY,
+	"Lundi" boolean NOT NULL,
+	"Mardi" boolean NOT NULL,
+	"Mercredi" boolean NOT NULL,
+	"Jeudi" boolean NOT NULL,
+	"Vendredi" boolean NOT NULL,
+	"Samedi" boolean NOT NULL,
+	"Dimanche" boolean NOT NULL,
+	CONSTRAINT "Donnees_key" UNIQUE ("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
 );
 
 CREATE TABLE "Exception"
 (
-    "Id" serial PRIMARY KEY,
-    "Planning" varchar NOT NULL,
-    "Ajoute" boolean NOT NULL,
-    "DateDebut" date NOT NULL,
-    "DateFin" date,
-    CONSTRAINT "Planning_fkey" FOREIGN KEY ("Planning")
-        REFERENCES "Planning" ("Nom") MATCH SIMPLE,
-    CONSTRAINT "DateDebut_DateFin_key" UNIQUE ("Planning", "DateDebut", "DateFin"),
-    CONSTRAINT "DateDebutInferieurDateFin" CHECK ("DateDebut"<="DateFin"),
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+	"Id" serial PRIMARY KEY,
+	"Nom" varchar,
+	"Planning" varchar NOT NULL,
+	"Ajoute" boolean NOT NULL,
+	"DateDebut" date NOT NULL,
+	"DateFin" date,
+	CONSTRAINT "Planning_fkey" FOREIGN KEY ("Planning")
+	REFERENCES "Planning" ("Nom") MATCH SIMPLE,
+	CONSTRAINT "DateDebut_DateFin_key" UNIQUE ("Planning", "DateDebut", "DateFin"),
+	CONSTRAINT "Nom_key" UNIQUE ("Nom", "Planning"),
+	CONSTRAINT "DateDebutInferieurDateFin" CHECK ("DateDebut"<="DateFin"),
+	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 CREATE TABLE "Trajet"
 (
-    "Id" serial PRIMARY KEY,
-    "Ligne" integer NOT NULL,
-    "HeureDepart" time without time zone NOT NULL,
-    "HeureArrivee" time without time zone NOT NULL,
-    "PrixPrem" numeric(5,2),
-    "PrixSec" numeric(5,2) NOT NULL,
-    "Planning" varchar,
-    CONSTRAINT "Pas_deux_departs_en_mm_tmps" UNIQUE ("HeureArrivee", "Ligne"),
-    CONSTRAINT "Pas_deux_arrivees_en_mm_tmps" UNIQUE ("HeureDepart", "Ligne"),
-    CONSTRAINT "Ligne_fkey" FOREIGN KEY ("Ligne")
-        REFERENCES "Ligne" ("Id") MATCH SIMPLE,
-    CONSTRAINT "Planning_fkey" FOREIGN KEY ("Planning")
-        REFERENCES "Planning" ("Nom") MATCH SIMPLE,
-    CONSTRAINT "Arrivee_apres_depart" CHECK ("HeureDepart" < "HeureArrivee"),
-    CONSTRAINT "PrixSec_pos" CHECK ("PrixSec" > 0),
-    CONSTRAINT "PrixPrem_pos" CHECK ("PrixPrem" > 0),
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+	"Id" serial PRIMARY KEY,
+	"Ligne" integer NOT NULL,
+	"HeureDepart" time without time zone NOT NULL,
+	"HeureArrivee" time without time zone NOT NULL,
+	"PrixPrem" numeric(5,2),
+	"PrixSec" numeric(5,2) NOT NULL,
+	"Planning" varchar,
+	CONSTRAINT "Pas_deux_departs_en_mm_tmps" UNIQUE ("HeureArrivee", "Ligne"),
+	CONSTRAINT "Pas_deux_arrivees_en_mm_tmps" UNIQUE ("HeureDepart", "Ligne"),
+	CONSTRAINT "Ligne_fkey" FOREIGN KEY ("Ligne")
+	REFERENCES "Ligne" ("Id") MATCH SIMPLE,
+	CONSTRAINT "Planning_fkey" FOREIGN KEY ("Planning")
+	REFERENCES "Planning" ("Nom") MATCH SIMPLE,
+	CONSTRAINT "Arrivee_apres_depart" CHECK ("HeureDepart" < "HeureArrivee"),
+	CONSTRAINT "PrixSec_pos" CHECK ("PrixSec" > 0),
+	CONSTRAINT "PrixPrem_pos" CHECK ("PrixPrem" > 0),
+	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 CREATE TABLE "Voyageur"
 (
-    "Id" serial PRIMARY KEY,
-    "Nom" varchar(20) NOT NULL,
-    "Prenom" varchar(20) NOT NULL,
-    "NumeroTel" numeric(10,0),
-    "NumeroCarte" numeric(12,0),
-    "Ville" varchar,
-    "TypeVoyageur" "StatutVoyageur" NOT NULL,
-    "adresse" "Adresse",
-    CONSTRAINT "Nom_prenom_adresse_ville_key" UNIQUE ("Nom", "Prenom", "adresse", "Ville"),
-    CONSTRAINT "NumeroCarte_key" UNIQUE ("NumeroCarte"),
-    CONSTRAINT "NumeroTel_key" UNIQUE ("NumeroTel"),
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+	"Id" serial PRIMARY KEY,
+	"Nom" varchar NOT NULL,
+	"Prenom" varchar NOT NULL,
+	"NumeroTel" numeric(10,0),
+	"NumeroCarte" numeric(12,0),
+	"Ville" varchar,
+	"TypeVoyageur" "StatutVoyageur" NOT NULL,
+	"adresse" "Adresse",
+	CONSTRAINT "Nom_prenom_adresse_ville_key" UNIQUE ("Nom", "Prenom", "adresse", "Ville"),
+	CONSTRAINT "NumeroCarte_key" UNIQUE ("NumeroCarte"),
+	CONSTRAINT "NumeroTel_key" UNIQUE ("NumeroTel"),
+	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 CREATE TABLE "Reservation"
 (
-    "Id" serial PRIMARY KEY,
-    "Voyageur" integer NOT NULL,
-    "Assurance" boolean NOT NULL,
-    "MoyenPaiement" "MoyenPaiement" NOT NULL,
-    CONSTRAINT "Voyageur_fkey" FOREIGN KEY ("Voyageur")
-        REFERENCES "Voyageur" ("Id") MATCH SIMPLE,
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+	"Id" serial PRIMARY KEY,
+	"Voyageur" integer NOT NULL,
+	"Assurance" boolean NOT NULL,
+	"MoyenPaiement" "MoyenPaiement" NOT NULL,
+	CONSTRAINT "Voyageur_fkey" FOREIGN KEY ("Voyageur")
+	REFERENCES "Voyageur" ("Id") MATCH SIMPLE,
+	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 CREATE TABLE "Billet"
 (
-    "Id" serial PRIMARY KEY,
-    "Trajet" integer NOT NULL,
-    "Date" date NOT NULL,
-    "Classe" "Classe" NOT NULL,
-    "Place" integer,
-    "Annule" boolean NOT NULL,
-    "Reservation" integer NOT NULL,
-    CONSTRAINT "Reservation_fkey" FOREIGN KEY ("Reservation")
-        REFERENCES "Reservation" ("Id") MATCH SIMPLE,
-    CONSTRAINT "Trajet_fkey" FOREIGN KEY ("Trajet")
-        REFERENCES "Trajet" ("Id") MATCH SIMPLE,
-    CONSTRAINT "Place_pos" CHECK ("Place" > 0),
-    CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
+	"Id" serial PRIMARY KEY,
+	"Trajet" integer NOT NULL,
+	"Date" date NOT NULL,
+	"Classe" "Classe" NOT NULL,
+	"Place" integer,
+	"Annule" boolean NOT NULL,
+	"Reservation" integer NOT NULL,
+	CONSTRAINT "Reservation_fkey" FOREIGN KEY ("Reservation")
+	REFERENCES "Reservation" ("Id") MATCH SIMPLE,
+	CONSTRAINT "Trajet_fkey" FOREIGN KEY ("Trajet")
+	REFERENCES "Trajet" ("Id") MATCH SIMPLE,
+	CONSTRAINT "Place_pos" CHECK ("Place" > 0),
+	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 
 CREATE OR REPLACE FUNCTION "areExceptionsOverlaping"(
-  DateDebut Date,
-  DateFin Date
+	DateDebut Date,
+	DateFin Date
 )
 RETURNS int
 LANGUAGE 'plpgsql'
 AS $BODY$
 
 DECLARE
-  Result int;
+Result int;
 BEGIN
-  Result:=0;
-  IF EXISTS(SELECT * FROM "Exception" e WHERE NOT ((e."DateDebut"<DateDebut and e."DateFin"<DateDebut) or (e."DateDebut">DateFin and e."DateFin" > DateFin)))
-	THEN
-	Result := 1;
-	END IF;
-  RETURN Result;
+Result:=0;
+IF EXISTS(SELECT * FROM "Exception" e WHERE NOT ((e."DateDebut"<DateDebut and e."DateFin"<DateDebut) or (e."DateDebut">DateFin and e."DateFin" > DateFin)))
+THEN
+Result := 1;
+END IF;
+RETURN Result;
 END
 $BODY$;
 

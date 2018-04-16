@@ -123,10 +123,10 @@ CREATE TABLE "Voyageur"
 	"Nom" varchar NOT NULL,
 	"Prenom" varchar NOT NULL,
 	"NumeroTel" numeric(10,0),
+    "TypeVoyageur" "StatutVoyageur" NOT NULL,
 	"NumeroCarte" numeric(12,0),
+    "adresse" "Adresse",
 	"Ville" varchar,
-	"TypeVoyageur" "StatutVoyageur" NOT NULL,
-	"adresse" "Adresse",
 	CONSTRAINT "Nom_prenom_adresse_ville_key" UNIQUE ("Nom", "Prenom", "adresse", "Ville"),
 	CONSTRAINT "NumeroCarte_key" UNIQUE ("NumeroCarte"),
 	CONSTRAINT "NumeroTel_key" UNIQUE ("NumeroTel"),
@@ -157,6 +157,7 @@ CREATE TABLE "Billet"
 	REFERENCES "Reservation" ("Id") MATCH SIMPLE,
 	CONSTRAINT "Trajet_fkey" FOREIGN KEY ("Trajet")
 	REFERENCES "Trajet" ("Id") MATCH SIMPLE,
+    CONSTRAINT "Trajet_date_place_key" UNIQUE ("Trajet", "Date", "Place"),
 	CONSTRAINT "Place_pos" CHECK ("Place" > 0),
 	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );

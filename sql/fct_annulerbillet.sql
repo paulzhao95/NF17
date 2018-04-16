@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION "prixBillet"(
     idBillet integer)
-RETURNS integer
+RETURNS numeric
     LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE
@@ -17,13 +17,13 @@ BEGIN
     ELSE
         SELECT INTO prix "PrixSec" FROM "Billet" INNER JOIN "Trajet" ON "Billet"."Trajet" = "Trajet"."Id";
     END IF;
-    RETURN prix; 
+    RETURN prix;
 END
 $BODY$;
 
 CREATE OR REPLACE FUNCTION "montantRemboursementBillet"(
     idBillet integer)
-RETURNS integer
+RETURNS numeric
     LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE
@@ -34,7 +34,7 @@ BEGIN
     IF NOT FOUND THEN
         RAISE EXCEPTION 'Billet % non trouvé', idBillet;
     END IF;
-    IF billet."Date" > CURRENT_DATE THEN
+    IF billet."Date" < CURRENT_DATE THEN
         RAISE EXCEPTION 'Billet % expiré', idBillet;
     END IF;
     IF billet."Annule" THEN
@@ -51,13 +51,13 @@ $BODY$;
 
 CREATE OR REPLACE FUNCTION "rembourserClient"(
     idVoyageur integer,
-    montant integer)
+    montant numeric)
 RETURNS boolean
     LANGUAGE 'plpgsql'
 AS $BODY$
 BEGIN
     --ON NE PEUT PAS FAIRE CETTE FONCTION POUR L'INSTANT
-    RETURN 1;
+    RETURN true;
 END
 $BODY$;
 
@@ -68,16 +68,14 @@ RETURNS boolean
 AS $BODY$
 DECLARE
     idVoyageur integer;
-    montant integer;
+    montant numeric;
 BEGIN
     montant := "montantRemboursementBillet"(idBillet);
     SELECT INTO idVoyageur "Voyageur" FROM "Reservation" INNER JOIN "Billet" ON "Reservation"."Id" = "Billet"."Reservation" WHERE "Billet"."Id" = idBillet;
     IF NOT "rembourserClient"(idVoyageur,montant) THEN
-        RETURN 0;
+        RETURN false;
     END IF;
-    UPDATE "Billet" SET "Annule" = 1 WHERE "Billet"."Id" = idBillet; 
-    RETURN 1;
+    UPDATE "Billet" SET "Annule" = true WHERE "Billet"."Id" = idBillet;
+    RETURN true;
 END
 $BODY$;
-
-

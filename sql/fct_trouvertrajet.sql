@@ -1,6 +1,6 @@
-CREATE OR REPLACE FUNCTION "trouverLigne"(
-	villed varchar,
-	villea varchar)
+CREATE OR REPLACE FUNCTION "trouverLigne"(   -- fonction qui renvoie un tableau des lignes allant de VilleD à VilleA
+	VilleD varchar,
+	VilleA varchar)
 RETURNS integer[]
 LANGUAGE 'plpgsql'
 AS $BODY$
@@ -13,8 +13,8 @@ BEGIN
 	WHERE "VilleGareDep" = VilleD
 	AND "VilleGareArr" = VilleA;
 
-	IF lignes_ok IS NULL <= 0 THEN
-	RAISE EXCEPTION 'Pas de train entre % et %.', VilleD, VilleA;
+	IF lignes_ok IS NULL THEN              -- si le tableau est vide c'est que le query n'a pas trouvé de ligne entre ces villes
+	   RAISE EXCEPTION 'Pas de train entre % et %.', VilleD, VilleA;
 	END IF;
 
 	RETURN lignes_ok;
@@ -34,20 +34,19 @@ DECLARE
 	plannings_pasok varchar[];
 
 BEGIN
-	jour_semaine := extract(isodow from jour);
-
-    SELECT array_agg("Planning") INTO plannings_pasok
+    SELECT array_agg("Planning") INTO plannings_pasok     -- les plannings qui sont concernés par une exception annulante à la date demandée devront être exclus du résultat
 	FROM "Exception"
 	WHERE "DateDebut" <= jour
 	AND "DateFin" >= jour
 	AND "Ajoute" = false;
 
-	CASE jour_semaine
+    jour_semaine := extract(isodow from jour);
+	CASE jour_semaine     -- les plannings sont élaborés de façon hebdomadaire, il faut donc faire des queries différents selon le dow
 	WHEN 1 THEN
     	SELECT array_agg("Nom") INTO plannings_ok
     	FROM "Planning"
     	WHERE "Lundi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
+    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));  -- on exclut les plannings trouvés plus haut
 
 	WHEN 2 THEN
     	SELECT array_agg("Nom") INTO plannings_ok
@@ -86,13 +85,13 @@ BEGIN
     	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
 	END CASE;
 
-    SELECT array_agg("Planning") INTO plannings_ajoutes
+    SELECT array_agg("Planning") INTO plannings_ajoutes  -- il faut trouver les exceptions qui ajoutent des trajets
     FROM "Exception"
     WHERE "DateDebut" <= jour
     AND "DateFin" >= jour
     AND "Ajoute" = true;
 
-    SELECT array_cat(plannings_ok, plannings_ajoutes) INTO plannings_ok;
+    SELECT array_cat(plannings_ok, plannings_ajoutes) INTO plannings_ok;  -- le résultat final est la concaténation des plannings exceptionnels et des plannings qui marchent ce jour de la semaine
 
 	IF plannings_ok IS NULL THEN
 	   RAISE EXCEPTION 'Aucun train planifie le %.', jour;
@@ -104,10 +103,10 @@ $BODY$;
 
 
 CREATE OR REPLACE FUNCTION "trouverTrajet"(
-	villeD varchar,
-	villeA varchar,
+	VilleD varchar,
+	VilleA varchar,
 	jour date)
-RETURNS TABLE(num_trajet integer,
+RETURNS TABLE(num_trajet integer,              -- le type de retour sera une table avec toutes les informations qui intéressent l'utilisateur, c'est la fonction destinée à être affichée
 	gare_dep varchar,
 	heure_dep time without time zone,
 	gare_arr varchar,
@@ -122,7 +121,7 @@ BEGIN
 	RETURN QUERY SELECT "Trajet"."Id", "NomGareDep", "HeureDepart", "NomGareArr", "HeureArrivee", "PrixSec", "PrixPrem", "TypeTrain"
 	FROM "Trajet" INNER JOIN "Ligne"
 	ON "Trajet"."Ligne" = "Ligne"."Id"
-    WHERE "Trajet"."Ligne" = ANY("trouverLigne"(villeD, villeA))
+    WHERE "Trajet"."Ligne" = ANY("trouverLigne"(VilleD, VilleA))       -- on se sert des fonctions précédentes pour afficher les trajets qui correspondent au souhait de l'utilisateur
 	AND "Trajet"."Planning" = ANY("trouverPlanning"(jour));
 END
 $BODY$;

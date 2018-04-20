@@ -94,23 +94,137 @@ Si notre système contient toutes les informations listées ci-dessus, il est al
 Des besoins de la SCF et des interprétations que nous avons explicitées ci-dessus, nous avons construit le modèle de données suivant :
 ![UML](https://raw.githubusercontent.com/bertille-ddp/NF17/master/uml/MCD.png)
 
-## Modèle logique de données
+## Modèle logique de données et dépendances fonctionnelles
 Il se traduit en un ensemble de tables, que nous pourront créer dans la base de données.
 
 Nous avons souligné les attributs non clés qui doivent être non nuls.
 ```markdown
 Ville(#Nom: string, CP: integer, __ZoneHoraire__: integer) avec CP clé
-Gare(#Nom: string, #Ville=>Ville.Nom, __Adresse__: string)
-Hotel(#NomH: string, #Ville=>Gare.Ville, __Adresse__: string, __NomG__=>Gare.Nom, PrixNuit: unsigned integer) avec (Adresse, Ville) clé
-TyeTrain(#Nom: string, __nbPlacesPrem__: unsigned integer, __nbPlacesSec__: unsigned integer, __vitesseMax__: unsigned integer)
-Ligne(#Numero: unsigned integer, NomGareDep=>Gare.Nom, VilleGareDep=>Gare.Ville, NomGareArr=>Gare.Nom, VilleGareArr=>Gare.Ville, ModeleTrain=>TypeTrain.Nom) avec (NomGareDep, VilleGareDep, NomGareArr, VilleGareArr, ModeleTrain) clé
-Planning(#Nom: string, Jours: boolean array, Debut: date, Fin: date) avec (Jours, Debut, Fin) unique
-Exception(#Id: unsigned integer, Nom: string, Planning=>Planning.Nom, Ajoute: boolean, DateDebut: date, DateFin: date) avec (Planning, DateDebut, DateFin) clé et (Nom, Planning) clé
-Trajet(#Numero: unsigned int, Ligne=>Ligne.Numero, HeureDepart: time, HeureArrivee: time, PrixPrem: float, __PrixSec__: float, __Planning__=>Planning.nom) avec (HeureDepart, Ligne) et (HeureArrivee, Ligne) clés
-Voyageur(#Id: unsigned int, Nom: string, Prenom: string, NumeroTel: numeric, __TypeVoyageur__: string{'Occasionnel', 'Argent', 'Or', 'Platine'}, NumeroCarte: numeric, Adresse: string, Ville: string) avec (Nom, Prenom, Adresse, Ville) clé et NumeroCarte et NumeroTel uniques s'ils existent
-Reservation(#Numero: unsigned int, __Voyageur__=>Voyageur.id, __Assurance__: boolean, __MoyenPaiement__: string{'CB', 'Chèque', 'Espèces'})
-Billet(#Numero: int, Trajet=>Trajet.Numero, Date: date, __Classe__: int{1, 2}, Place: unsigned int, Annule: boolean, Reservation=>Reservation.Numero) avec (Trajet, Date, Place) clé
+	Ville.Nom -> Ville.CP
+	Ville.Nom -> ZoneHoraire
+	Ville.CP -> Ville.Nom
 ```
+Est 3NF puisque toutes les DFE vers des attributs non-clé sont issues de clés, et la clé est atomique.
+
+```markdown
+Gare(#Nom: string, #Ville=>Ville.Nom, __Adresse__: string)
+	Gare.Nom, Ville.nom -> Gare.Adresse
+```
+Ici la clé est composée de deux attributs, mais aucun n'est issu d'une partie seulement de la clé, donc 3NF.
+
+```markdown
+Hotel(#NomH: string, #Ville=>Gare.Ville, __Adresse__: string, __NomG__=>Gare.Nom, PrixNuit: unsigned integer) avec (Adresse, Ville) clé
+	Hotel.NomH, Gare.Ville -> Hotel.Adresse
+	Hotel.NomH, Gare.Ville -> Gare.Nom
+	Hotel.NomH, Gare.Ville ->Hotel.PrixNuit
+	Hotel.Adresse, Gare.Ville -> Hotel.NomH
+  	Hotel.Adresse, Gare.Ville -> Gare.Nom
+	Hotel.Adresse, Gare.Ville -> Hotel.PrixNuit
+```
+Encore une fois, la clé est composée de deux attributs, mais aucun n'est issu d'une partie seulement de la clé, donc 3NF, et même BCNF puisque tous les attributs sont issus de clés.
+
+```markdown
+TypeTrain(#Nom: string, __nbPlacesPrem__: unsigned integer, __nbPlacesSec__: unsigned integer, __vitesseMax__: unsigned integer)
+	TypeTrain.Nom -> TypeTrain.nbPlacesPrem
+	TypeTrain.Nom ->TypeTrain.nbPlacesSec
+	TypeTrain.Nom -> TypeTrain.vitesseMax
+```
+De même, attributs atomiques qui dépendent de Nom qui est ici la clé primaire. Toutes les DFE sont issues d'une clé, on a même une BCNF, donc 3NF.
+
+```markdown
+Ligne(#Numero: unsigned integer, NomGareDep=>Gare.Nom, VilleGareDep=>Gare.Ville, NomGareArr=>Gare.Nom, VilleGareArr=>Gare.Ville, ModeleTrain=>TypeTrain.Nom) avec (NomGareDep, VilleGareDep, NomGareArr, VilleGareArr, ModeleTrain) clé
+	Ligne.Numero ->  NomGareDep=>Gare.Nom
+	Ligne.Numero -> VilleGareDep=>Gare.Ville
+	Ligne.Numero ->  NomGareArr=>Gare.Nom
+	Ligne.Numero -> VilleGareArr=>Gare.Ville
+	Ligne.Numero -> TypeTrain.Nom
+	NomGareDep, VilleGareDep, NomGareArr, VilleGareArr, ModeleTrain ->Ligne.Numero
+	NomGareDep, VilleGareDep, NomGareArr, VilleGareArr, ModeleTrain ->TypeTrain.Nom
+```
+Tous les attributs qui n'appartiennent à aucune clé candidate (à savoir `TypeTrain.Nom`) ne dépendant directement que de clés candidates.
+
+```markdown
+Planning(#Nom: string, Jours: boolean array, Debut: date, Fin: date) avec (Jours, Debut, Fin) unique
+	Planning.Nom -> Planning.Jours
+	Planning.Nom -> Planning.Debut
+	Planning.Nom -> Planning.Fin
+```
+
+```markdown
+Exception(#Id: unsigned integer, Nom: string, Planning=>Planning.Nom, __Ajoute__: boolean, DateDebut: date, DateFin: date) avec (Planning, DateDebut, DateFin) clé et (Nom, Planning) clé
+	Exception.Id -> Exception.Nom
+	Exception.Id -> Planning.Nom
+	Exception.Id -> Excpetion.Ajoute
+	Exception.Id -> Exception.DateDebut
+	Exception.Id -> Exception.DateFin
+	Planning.Nom, Exception.DateDebut, Exception.DateFin -> Exception.Id
+	Planning.Nom, Exception.DateDebut, Exception.DateFin -> Exception.Nom
+	Planning.Nom, Exception.DateDebut, Exception.DateFin -> Excpetion.Ajoute
+	Exception.Nom, Planning.Nom -> Exception.Id
+	Exception.Nom, Planning.Nom -> Exception.DateDebut
+	Exception.Nom, Planning.Nom ->Exception.DateFin
+	Exception.Nom, Planning.Nom ->Exception.Ajoute
+```
+Même justification, tous les attributs non clés dépendent uniquement de clés : 3NF.
+
+```markdown
+Trajet(#Numero: unsigned int, Ligne=>Ligne.Numero, HeureDepart: time, HeureArrivee: time, PrixPrem: float, __PrixSec__: float, __Planning__=>Planning.Nom) avec (HeureDepart, Ligne) et (HeureArrivee, Ligne) clés
+	Trajet.Numero -> Ligne.Numero
+	Trajet.Numero -> Trajet.HeureDepart
+	Trajet.Numero -> Trajet.HeureArrivee
+	Trajet.Numero -> Trajet.PrixPrem
+	Trajet.Numero -> Trajet.PrixSec
+	Trajet.Numero -> Planning.Nom
+	Trajet.HeureDepart, Ligne.Numero -> Trajet.Numero
+	Trajet.HeureDepart, Ligne.Numero ->  Trajet.HeureArrivee
+	Trajet.HeureDepart, Ligne.Numero ->  Trajet.PrixPrem
+	Trajet.HeureDepart, Ligne.Numero ->  Trajet.PrixSec
+	Trajet.HeureDepart, Ligne.Numero -> Planning.Nom
+	Trajet.HeureArrivee, Ligne.Numero -> Trajet.Numero
+	Trajet.HeureArrivee, Ligne.Numero -> Trajet.HeureDepart
+	Trajet.HeureArrivee, Ligne.Numero -> Trajet.PrixPrem
+	Trajet.HeureArrivee, Ligne.Numero -> Trajet.PrixSec
+	Trajet.HeureArrivee, Ligne.Numero -> Planning.Nom
+```
+Tous les attributs non clés dépendent uniquement de clés : 3NF.
+
+```markdown
+Voyageur(#Id: unsigned int, Nom: string, Prenom: string, NumeroTel: numeric, __TypeVoyageur__: string{'Occasionnel', 'Argent', 'Or', 'Platine'}, NumeroCarte: numeric, Adresse: string, Ville: string) avec (Nom, Prenom, Adresse, Ville) clé et NumeroCarte et NumeroTel uniques s'ils existent
+	Voyageur.Id -> Voyageur.Nom
+	Voyageur.Id ->Voyageur.Prenom
+	Voyageur.Id ->Voyageur.NumeroTel
+	Voyageur.Id -> Voyageur.TypeVoyageur
+	Voyageur.Id -> Voyageur.NumeroCarte
+	Voyageur.Id -> Voyageur.Adresse
+	Voyageur.Id -> Voyageur.Ville
+	Voyageur.Nom, Voyageur.Prenom, Voyageur.Adresse, Voyageur.Ville -> Voyageur.Id
+	Voyageur.Nom, Voyageur.Prenom, Voyageur.Adresse, Voyageur.Ville ->  Voyageur.NumeroTel
+	Voyageur.Nom, Voyageur.Prenom, Voyageur.Adresse, Voyageur.Ville ->  Voyageur.NumeroCarte
+```
+Seules les clés génèrent des attributs non clés. 3NF.
+
+```markdown
+Reservation(#Numero: unsigned int, __Voyageur__=>Voyageur.id, __Assurance__: boolean, __MoyenPaiement__: string{'CB', 'Chèque', 'Espèces'})
+	Reservation.Numero -> Voyageur.Id
+	Reservation.Numero -> Reservation.Assurance
+	Reservation.Numero -> Reservation.MoyenPaiement
+```
+La clé primaire génère tous les autres attributs. 3NF.
+
+```markdown
+Billet(#Numero: int, Trajet=>Trajet.Numero, Date: date, __Classe__: int{1, 2}, Place: unsigned int, Annule: boolean, Reservation=>Reservation.Numero) avec (Trajet, Date, Place) clé
+	Billet.Numero -> Trajet.Numero
+	Billet.Numero -> Billet.Date
+	Billet.Numero -> Billet.Classe
+	Billet.Numero -> Billet.Place
+	Billet.Numero -> Billet.Annule
+	Billet.Numero -> Reservation.Numero
+	Billet.Date, Billet.Place, Trajet.Numero -> Billet.Numero
+	Billet.Date, Billet.Place, Trajet.Numero -> Billet.Classe
+	Billet.Date, Billet.Place, Trajet.Numero -> Billet.Annule
+	Billet.Date, Billet.Place, Trajet.Numero -> Reservation.Numero
+```
+Tous les attributs non clés dépendent uniquement de clés : 3NF.
 
 ### Contraintes d'intégrité
 * `NomGareDep` et `VilleGareDep` doivent référencer un même enregistrement de `Gare`.
@@ -123,6 +237,3 @@ Billet(#Numero: int, Trajet=>Trajet.Numero, Date: date, __Classe__: int{1, 2}, P
 * `Trajet.HeureDepart` doit être inférieure à `Trajet.HeureArrivee`.
 * `Trajet.PrixPrem` et `Trajet.PrixSec` sont positifs.
 * `Billet.Place` doit être inférieur au nombre total de places disponibles dans ce type de train.
-
-### Dépendances fonctionnelles
-#TODO

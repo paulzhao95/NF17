@@ -1,3 +1,4 @@
+DELETE FROM "Ville";
 DELETE FROM "Gare";
 DELETE FROM "Hotel";
 DELETE FROM "TypeTrain";

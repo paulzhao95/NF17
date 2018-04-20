@@ -15,19 +15,29 @@ CREATE TYPE "StatutVoyageur" AS ENUM
 
 
 
+CREATE TABLE "Ville"
+(
+    "Nom" varchar PRIMARY KEY,
+    "CP" numeric(5,0) NOT NULL,
+    "ZoneHoraire" integer NOT NULL,
+    CONSTRAINT "CP_key" UNIQUE ("CP"),
+    CONSTRAINT "ZoneHor_ok" CHECK ("ZoneHoraire" >= -12 AND "ZoneHoraire" <= 12)
+);
+
 CREATE TABLE "Gare"
 (
 	"Nom" varchar NOT NULL,
-	"Adresse" varchar NOT NULL,
+	"Adresse" "Adresse" NOT NULL,
 	"Ville" varchar NOT NULL,
-	"ZoneHor" varchar NOT NULL,
-	CONSTRAINT "Gare_pkey" PRIMARY KEY ("Nom", "Ville")
+	CONSTRAINT "Gare_pkey" PRIMARY KEY ("Nom", "Ville"),
+    CONSTRAINT "Ville_fkey" FOREIGN KEY ("Ville")
+	REFERENCES "Ville" ("Nom") MATCH SIMPLE
 );
 
 CREATE TABLE "Hotel"
 (
 	"Nom" varchar NOT NULL,
-	"Adresse" varchar NOT NULL,
+	"Adresse" "Adresse" NOT NULL,
 	"Ville" varchar NOT NULL,
 	"Gare" varchar,
 	"PrixNuit" integer,
@@ -64,20 +74,18 @@ CREATE TABLE "Ligne"
 	REFERENCES "Gare" ("Nom", "Ville") MATCH SIMPLE,
 	CONSTRAINT "Ligne_TypeTrain_fkey" FOREIGN KEY ("TypeTrain")
 	REFERENCES "TypeTrain" ("Nom") MATCH SIMPLE,
+    CONSTRAINT "Depart_arrivee_diff" CHECK (("NomGareDep", "VilleGareDep") <> ("NomGareArr", "VilleGareArr")),
 	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
 );
 
 CREATE TABLE "Planning"
 (
 	"Nom" varchar PRIMARY KEY,
-	"Lundi" boolean NOT NULL,
-	"Mardi" boolean NOT NULL,
-	"Mercredi" boolean NOT NULL,
-	"Jeudi" boolean NOT NULL,
-	"Vendredi" boolean NOT NULL,
-	"Samedi" boolean NOT NULL,
-	"Dimanche" boolean NOT NULL,
-	CONSTRAINT "Donnees_key" UNIQUE ("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
+	"Jours" boolean[7] NOT NULL,
+    "Debut" date,
+    "Fin" date,
+	CONSTRAINT "Donnees_key" UNIQUE ("Jours", "Debut", "Fin"),
+    CONSTRAINT "Debut_avant_fin" CHECK ("Debut" <= "Fin")
 );
 
 CREATE TABLE "Exception"
@@ -125,9 +133,9 @@ CREATE TABLE "Voyageur"
 	"NumeroTel" numeric(10,0),
     "TypeVoyageur" "StatutVoyageur" NOT NULL,
 	"NumeroCarte" numeric(12,0),
-    "adresse" "Adresse",
+    "Adresse" "Adresse",
 	"Ville" varchar,
-	CONSTRAINT "Nom_prenom_adresse_ville_key" UNIQUE ("Nom", "Prenom", "adresse", "Ville"),
+	CONSTRAINT "Nom_prenom_adresse_ville_key" UNIQUE ("Nom", "Prenom", "Adresse", "Ville"),
 	CONSTRAINT "NumeroCarte_key" UNIQUE ("NumeroCarte"),
 	CONSTRAINT "NumeroTel_key" UNIQUE ("NumeroTel"),
 	CONSTRAINT "Id_diff_0" CHECK ("Id" <> 0)
@@ -172,15 +180,16 @@ LANGUAGE 'plpgsql'
 AS $BODY$
 
 DECLARE
-Result int;
+    Result int;
 BEGIN
-Result:=0;
-IF EXISTS(SELECT * FROM "Exception" e WHERE NOT ((e."DateDebut"<DateDebut and e."DateFin"<DateDebut) or (e."DateDebut">DateFin and e."DateFin" > DateFin)))
-THEN
-Result := 1;
-END IF;
-RETURN Result;
+    Result:=0;
+    IF EXISTS(SELECT * FROM "Exception" e WHERE NOT ((e."DateDebut"<DateDebut and e."DateFin"<DateDebut) or (e."DateDebut">DateFin and e."DateFin" > DateFin))) THEN
+        Result := 1;
+    END IF;
+    RETURN Result;
 END
 $BODY$;
 
-ALTER TABLE "Exception" ADD CONSTRAINT "overlapingExceptions" CHECK ("areExceptionsOverlaping"("DateDebut","DateFin") = 0);
+ALTER TABLE "Exception"
+ADD CONSTRAINT "overlapingExceptions"
+CHECK ("areExceptionsOverlaping"("DateDebut","DateFin") = 0);

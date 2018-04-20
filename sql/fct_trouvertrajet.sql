@@ -41,49 +41,13 @@ BEGIN
 	AND "Ajoute" = false;
 
     jour_semaine := extract(isodow from jour);
-	CASE jour_semaine     -- les plannings sont élaborés de façon hebdomadaire, il faut donc faire des queries différents selon le dow
-	WHEN 1 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Lundi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));  -- on exclut les plannings trouvés plus haut
 
-	WHEN 2 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Mardi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
-
-	WHEN 3 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Mercredi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
-
-	WHEN 4 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Jeudi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
-
-	WHEN 5 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Vendredi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
-
-	WHEN 6 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Samedi" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
-
-	WHEN 7 THEN
-    	SELECT array_agg("Nom") INTO plannings_ok
-    	FROM "Planning"
-    	WHERE "Dimanche" = true
-    	AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok));
-	END CASE;
+    SELECT array_agg("Nom") INTO plannings_ok
+    FROM "Planning"
+    WHERE "Jours"[jour_semaine] = true         -- le numéro du jour de la semaine donne la case du tableau à vérifier
+    AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok))  -- on exclut les plannings trouvés plus haut
+    AND ("Debut" IS NULL OR "Debut" <= jour)      -- il faut que le planning couvre le jour sélectionné
+    AND ("Fin" IS NULL OR "Fin" >= jour);
 
     SELECT array_agg("Planning") INTO plannings_ajoutes  -- il faut trouver les exceptions qui ajoutent des trajets
     FROM "Exception"

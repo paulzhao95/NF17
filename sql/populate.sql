@@ -6,14 +6,26 @@ INSERT INTO "TypeTrain" ("Nom", "nbPlacesPrem", "nbPlacesSec", "vitesseMax") VAL
 ('TGV Duplex', 364, 656, 320)
 ;
 
-INSERT INTO "Gare" ("Nom", "Adresse", "Ville", "ZoneHor") VALUES
-('Bordeaux Saint-Jean', '1 rue Charles Domercq', 'Bordeaux', 'UTC+2'),
-('Gare de Compiegne', '1 place de la Gare', 'Compiegne', 'UTC+2'),
-('Gare de Lyon', '1 place Louis Armand', 'Paris', 'UTC+2'),
-('Gare de Maubeuge', '1 rue du Gazometre', 'Maubeuge', 'UTC+2'),
-('Gare du Nord', '18 rue de Dunkerque', 'Paris', 'UTC+2'),
-('Gare Montparnasse', '17 boulevard de Vaugirard', 'Paris', 'UTC+2'),
-('Lyon Part-Dieu', '5 place Charles Beraudier', 'Lyon', 'UTC+2')
+INSERT INTO "Ville" ("Nom", "CP", "ZoneHoraire") VALUES
+('Paris', 75000, 2),
+('Lyon', 69000, 2),
+('Compiegne', 60200, 2),
+('Bordeaux', 33000, 2),
+('Maubeuge', 59600, 2)
+;
+
+INSERT INTO "Gare" ("Nom", "Adresse", "Ville") VALUES
+('Bordeaux Saint-Jean', (1, 'rue Charles Domercq'), 'Bordeaux'),
+('Gare de Compiegne', (1, 'place de la Gare'), 'Compiegne'),
+('Gare de Lyon', (1, 'place Louis Armand'), 'Paris'),
+('Gare de Maubeuge', (1, 'rue du Gazometre'), 'Maubeuge'),
+('Gare du Nord', (18, 'rue de Dunkerque'), 'Paris'),
+('Gare Montparnasse', (17, 'boulevard de Vaugirard'), 'Paris'),
+('Lyon Part-Dieu', (5, 'place Charles Beraudier'), 'Lyon')
+;
+
+INSERT INTO "Hotel" ("Nom", "Adresse", "Ville", "Gare", "PrixNuit") VALUES
+('Hotel de Flandre', (16, 'quai de la République'), 'Compiegne', 'Gare de Compiegne', 61)
 ;
 
 INSERT INTO "Ligne" ("NomGareDep", "VilleGareDep", "NomGareArr", "VilleGareArr", "TypeTrain") VALUES
@@ -29,10 +41,10 @@ INSERT INTO "Ligne" ("NomGareDep", "VilleGareDep", "NomGareArr", "VilleGareArr",
 ('Gare de Compiegne', 'Compiegne', 'Gare du Nord', 'Paris', 'Intercites')
 ;
 
-INSERT INTO "Planning" ("Nom", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche") VALUES
-('Tous les jours', true, true, true, true, true, true, true),
-('Jours ouvres', true, true, true, true, true, false, false),
-('Week end', false, false, false, false, false, true, true)
+INSERT INTO "Planning" ("Nom", "Jours", "Debut", "Fin") VALUES
+('Tous les jours', ARRAY[true, true, true, true, true, true, true], NULL, NULL),
+('Jours ouvres', ARRAY[true, true, true, true, true, false, false], NULL, NULL),
+('Week end', ARRAY[false, false, false, false, false, true, true], NULL, NULL)
 ;
 
 INSERT INTO "Exception" ("Nom", "Ajoute", "Planning", "DateDebut", "DateFin") VALUES
@@ -48,7 +60,7 @@ INSERT INTO "Trajet" ("Ligne", "HeureDepart", "HeureArrivee", "PrixPrem", "PrixS
 (9, '19:16:00', '19:58:00', 015.00, 013.00, 'Jours ouvres')
 ;
 
-INSERT INTO "Voyageur" ("Nom", "Prenom", "NumeroTel", "NumeroCarte", "Ville", "adresse", "TypeVoyageur") VALUES
+INSERT INTO "Voyageur" ("Nom", "Prenom", "NumeroTel", "NumeroCarte", "Ville", "Adresse", "TypeVoyageur") VALUES
 ('Zhao', 'Paul', '0605040302', '001234567890', 'Compiegne', (1, 'rue de la Joie'), 'Or'),
 ('Sabbagh', 'Guillaume', '0123456789', '314159265358', 'Compiegne', (12, 'place du Bonheur'), 'Argent'),
 ('Delabre', 'Martin', '0607080910', NULL, 'Compiegne', (7, 'avenue du Sourire'), 'Occasionnel'),

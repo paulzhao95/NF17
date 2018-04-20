@@ -12,6 +12,7 @@ vim model/db_info.php # N'importe quel autre éditeur de texte fonctionne aussi
 # Préremplir la BDD en exécutant sql/populate.sql
 # Implémenter les fonctionnalités en exécutant sql/fct_*
 # Vérifier que les données sont cohérentes en important les vues de sql/vues.sql
+# Ces vues permettent aussi d'avoir des statistiques
 ```
 
 ## Note de clarification

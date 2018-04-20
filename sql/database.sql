@@ -135,6 +135,8 @@ CREATE TABLE "Voyageur"
 	"NumeroCarte" numeric(12,0),
     "Adresse" "Adresse",
 	"Ville" varchar,
+    CONSTRAINT "Ville_fkey" FOREIGN KEY ("Ville")
+	REFERENCES "Ville" ("Nom") MATCH SIMPLE
 	CONSTRAINT "Nom_prenom_adresse_ville_key" UNIQUE ("Nom", "Prenom", "Adresse", "Ville"),
 	CONSTRAINT "NumeroCarte_key" UNIQUE ("NumeroCarte"),
 	CONSTRAINT "NumeroTel_key" UNIQUE ("NumeroTel"),

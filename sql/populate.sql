@@ -57,7 +57,9 @@ INSERT INTO "Trajet" ("Ligne", "HeureDepart", "HeureArrivee", "PrixPrem", "PrixS
 (2, '07:35:00', '08:26:00', NULL, 015.00, 'Tous les jours'),
 (1, '07:34:00', '08:26:00', NULL, 015.00, 'Tous les jours'),
 (10, '19:00:00', '19:41:00', 015.00, 013.00, 'Jours ouvres'),
-(9, '19:16:00', '19:58:00', 015.00, 013.00, 'Jours ouvres')
+(9, '19:16:00', '19:58:00', 015.00, 013.00, 'Jours ouvres'),
+(7, '16:59:00', '18:56:00', 086.00, 052.00, 'Week end'),
+(8, '17:04:00', '19:01:00', 086.00, 075.00, 'Jours ouvres')
 ;
 
 INSERT INTO "Voyageur" ("Nom", "Prenom", "NumeroTel", "NumeroCarte", "Ville", "Adresse", "TypeVoyageur") VALUES
@@ -70,7 +72,8 @@ INSERT INTO "Voyageur" ("Nom", "Prenom", "NumeroTel", "NumeroCarte", "Ville", "A
 INSERT INTO "Reservation" ("Voyageur", "Assurance", "MoyenPaiement") VALUES
 (4, false, 'carte_bleue'),
 (3, false, 'especes'),
-(1, true, 'cheque')
+(1, true, 'cheque'),
+(2, true, 'carte_bleue')
 ;
 
 INSERT INTO "Billet" ("Trajet", "Date", "Classe", "Place", "Annule", "Reservation") VALUES
@@ -82,5 +85,7 @@ INSERT INTO "Billet" ("Trajet", "Date", "Classe", "Place", "Annule", "Reservatio
 (1, '2018-06-22', '2', 24, false, 2),
 (1, '2018-06-22', '2', 104, false, 3),
 (1, '2018-06-22', '2', 105, false, 3),
-(1, '2018-06-22', '2', 106, false, 3)
+(1, '2018-06-22', '2', 106, false, 3),
+(5, '2018-07-02', '1', 41, false, 4),
+(6, '2018-02-08', '2', 31, false, 4)
 ;

@@ -26,3 +26,26 @@ CREATE OR REPLACE VIEW "Incoherence_date_billet" AS      -- cette vue renvoie le
     ON "Billet"."Trajet" = "Trajet"."Id"
     WHERE "Trajet"."Planning" NOT IN (SELECT * FROM unnest("trouverPlanning"("Billet"."Date")))
 ;
+
+CREATE OR REPLACE VIEW "FrequentationLignes" AS         -- vue pour obtenir des statistiques sur la fréquentation de chaque ligne
+    SELECT COUNT("Billet"."Id") AS Frequentation, "VilleGareDep" AS Depart, "VilleGareArr" AS Arrivee
+	FROM "Billet" INNER JOIN "Trajet"
+	ON "Billet"."Trajet" = "Trajet"."Id"
+    INNER JOIN "Ligne"
+    ON "Trajet"."Ligne" = "Ligne"."Id"
+    WHERE "Billet"."Annule" = false
+    GROUP BY Depart, Arrivee
+    ORDER BY Frequentation DESC;
+
+CREATE OR REPLACE VIEW "FrequentationGares" AS         -- vue pour obtenir des statistiques sur la fréquentation de chaque ligne
+    SELECT COUNT("Billet"."Id") AS Frequentation, "Gare"."Nom" AS Nom, "Gare"."Ville" AS Ville
+	FROM "Billet" INNER JOIN "Trajet"
+    ON "Billet"."Trajet" = "Trajet"."Id"
+    INNER JOIN "Ligne"
+    ON "Trajet"."Ligne" = "Ligne"."Id"
+    INNER JOIN "Gare"
+    ON ("Ligne"."NomGareDep" = "Gare"."Nom" AND "Ligne"."VilleGareDep" = "Gare"."Ville")
+    OR ("Ligne"."NomGareArr" = "Gare"."Nom" AND "Ligne"."VilleGareArr" = "Gare"."Ville")
+    WHERE "Billet"."Annule" = false
+    GROUP BY Nom, Ville
+    ORDER BY Frequentation DESC;

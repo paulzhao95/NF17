@@ -1,5 +1,4 @@
-# NF17
-Projet Société de Chemins de Fer.
+# Projet Société de Chemins de Fer
 
 ## Installation
 
@@ -11,6 +10,8 @@ vim model/db_info.php # N'importe quel autre éditeur de texte fonctionne aussi
 # Remplir db_info.php avec les informations de connexion à la BDD
 # Créer les schémas de base de données en exécutant sql/database.sql
 # Préremplir la BDD en exécutant sql/populate.sql
+# Implémenter les fonctionnalités en exécutant sql/fct_*
+# Vérifier que les données sont cohérentes en important les vues de sql/vues.sql
 ```
 
 ## Note de clarification

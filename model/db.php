@@ -2,7 +2,7 @@
 
 // This file is to be included in every model.
 
-$db_info_path = 'db_info.php';
+$db_info_path = '../model/db_info.php';
 if(file_exists($db_info_path) && is_readable($db_info_path))
 	require_once($db_info_path);
 else

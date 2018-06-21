@@ -13,7 +13,8 @@
     global $db;
 
     //récupération des gares
-    $villes = $db->query('SELECT Nom FROM Ville');
+    $tb_ville = $db->query('SELECT Nom FROM Ville');
+    $liste_villes = $tb_ville->fetchAll(PDO::FETCH_COLUMN);
 
     //création d'un formulaire
     echo "<form action='visualiser_trajets.php' method='POST'>";
@@ -23,16 +24,16 @@
     echo "<tr><td>Ville de départ&nbsp:</td>";
     //affichage de tous les élèves dans une liste déroulante
     echo "<td><select name='villeDep' size='4' required>";
-    while ($row_ville = pg_fetch_row($villes)) {
-        echo "<option value='$row_ville[0]'>$row_ville[0]</option>";
+    foreach ($liste_villes as $ville) {
+        echo "<option value='$ville'>$ville</option>";
     }
     echo "</select></td></tr>";
 
     echo "<tr><td>Ville d'arrivée'&nbsp:</td>";
     //affichage de tous les élèves dans une liste déroulante
     echo "<td><select name='villeArr' size='4' required>";
-    while ($row_ville = pg_fetch_row($villes)) {
-        echo "<option value='$row_ville[0]'>$row_ville[0]</option>";
+    foreach ($liste_villes as $ville) {
+        echo "<option value='$ville'>$ville</option>";
     }
     echo "</select></td></tr>";
 
@@ -44,6 +45,5 @@
 
     echo "<br><input type='submit' value='Afficher les trains correspondants'>";
     echo "</form>";
-    mysqli_close($connect);
     ?>
 </body>

@@ -1,0 +1,74 @@
+html
+body {
+    margin: 20px;
+    padding: 20px;
+    font-family: "Lato", "Helvetica Neue", "Cantarell", sans-serif;
+    text-align: left;
+    background-color: white;
+    Line-Height: 1.5;
+    /*background-image: url(motif_de_fond.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right bottom*/
+}
+
+h1 {
+    font-size: 150%;
+    color: #696969;
+    background-color: transparent;
+}
+
+h2 {
+    font-size: 120%;
+    color: gray;
+    background-color: transparent;
+}
+
+h3 {
+    font-size: 80%;
+    color: silver;
+    background-color: transparent;
+}
+p {
+    font-size: 100%;
+    background-color: transparent;
+    text-align: justify;
+    margin-left: 15px;
+    margin-right: 0;
+}
+li {
+    font-size: 90%;
+    background-color: transparent;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+a:link {
+    font-size: 90%;
+    color: red;
+    background-color: transparent;
+    text-decoration: underline
+}
+a:visited {
+    font-size: 90%;
+    color: #ffa500;
+    background-color: transparent;
+    text-decoration: underline
+}
+a:hover {
+    font-size: 90%;
+    color: #ffd700;
+    background-color: transparent;
+    text-decoration: underline
+}
+a:active, a:focus {
+    font-size: 90%;
+    color: #ffd700;
+    background-color: transparent;
+    text-decoration: underline
+}
+button {
+    box-sizing: content-box;
+    padding: 5px 20px;
+    border-radius: 3px;
+    font-size: 90%;
+}

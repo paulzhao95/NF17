@@ -14,7 +14,7 @@
 
     //récupération des gares
     $tb_ville = $db->query('SELECT Nom FROM Ville');
-    $liste_villes = $tb_ville->fetchAll(PDO::FETCH_COLUMN);
+    $liste_villes = $tb_ville->fetchAll();
 
     //création d'un formulaire
     echo "<form action='visualiser_trajets.php' method='POST'>";
@@ -25,7 +25,7 @@
     //affichage de tous les élèves dans une liste déroulante
     echo "<td><select name='villeDep' size='4' required>";
     foreach ($liste_villes as $ville) {
-        echo "<option value='$ville'>$ville</option>";
+        echo "<option value='$ville[0]'>$ville[0]</option>";
     }
     echo "</select></td></tr>";
 

@@ -75,8 +75,8 @@ RETURNS TABLE(num_trajet integer,              -- le type de retour sera une tab
 	heure_dep time without time zone,
 	gare_arr varchar,
 	heure_arr time without time zone,
-	prix_sec integer,
-	prix_prem integer,
+	prix_sec numeric,
+	prix_prem numeric,
 	train varchar)
 LANGUAGE 'plpgsql'
 AS $BODY$

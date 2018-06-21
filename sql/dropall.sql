@@ -1,0 +1,19 @@
+DROP TYPE adresse CASCADE;
+DROP TYPE classe CASCADE;
+DROP TYPE MoyenPaiement CASCADE;
+DROP TYPE StatutVoyageur CASCADE;
+
+DROP TABLE gare CASCADE;
+DROP TABLE billet CASCADE;
+DROP TABLE exception CASCADE;
+DROP TABLE hotel CASCADE;
+DROP TABLE ligne CASCADE;
+DROP TABLE planning CASCADE;
+DROP TABLE reservation CASCADE;
+DROP TABLE trajet CASCADE;
+DROP TABLE typetrain CASCADE;
+DROP TABLE ville CASCADE;
+DROP TABLE voyageur CASCADE;
+
+
+DROP FUNCTION areexceptionsoverlaping(date,date);

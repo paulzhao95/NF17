@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION "trouverLigne"(   -- fonction qui renvoie un tableau des lignes allant de VilleD à VilleA
+CREATE OR REPLACE FUNCTION trouverLigne(   -- fonction qui renvoie un tableau des lignes allant de VilleD à VilleA
 	VilleD varchar,
 	VilleA varchar)
 RETURNS integer[]
@@ -8,10 +8,10 @@ DECLARE
 	lignes_ok integer[];
 
 BEGIN
-	SELECT array_agg("Id") INTO lignes_ok
-	FROM "Ligne"
-	WHERE "VilleGareDep" = VilleD
-	AND "VilleGareArr" = VilleA;
+	SELECT array_agg(Id) INTO lignes_ok
+	FROM Ligne
+	WHERE VilleGareDep = VilleD
+	AND VilleGareArr = VilleA;
 
 	IF lignes_ok IS NULL THEN              -- si le tableau est vide c'est que le query n'a pas trouvé de ligne entre ces villes
 	   RAISE EXCEPTION 'Pas de train entre % et %.', VilleD, VilleA;
@@ -22,7 +22,7 @@ END
 $BODY$;
 
 
-CREATE OR REPLACE FUNCTION "trouverPlanning"(
+CREATE OR REPLACE FUNCTION trouverPlanning(
 	jour date)
 RETURNS varchar[]
 LANGUAGE 'plpgsql'
@@ -34,26 +34,26 @@ DECLARE
 	plannings_pasok varchar[];
 
 BEGIN
-    SELECT array_agg("Planning") INTO plannings_pasok     -- les plannings qui sont concernés par une exception annulante à la date demandée devront être exclus du résultat
-	FROM "Exception"
-	WHERE "DateDebut" <= jour
-	AND "DateFin" >= jour
-	AND "Ajoute" = false;
+    SELECT array_agg(Planning) INTO plannings_pasok     -- les plannings qui sont concernés par une exception annulante à la date demandée devront être exclus du résultat
+	FROM Exception
+	WHERE DateDebut <= jour
+	AND DateFin >= jour
+	AND Ajoute = false;
 
     jour_semaine := extract(isodow from jour);
 
-    SELECT array_agg("Nom") INTO plannings_ok
-    FROM "Planning"
-    WHERE "Jours"[jour_semaine] = true         -- le numéro du jour de la semaine donne la case du tableau à vérifier
-    AND (plannings_pasok IS NULL OR NOT "Nom" = ANY(plannings_pasok))  -- on exclut les plannings trouvés plus haut
-    AND ("Debut" IS NULL OR "Debut" <= jour)      -- il faut que le planning couvre le jour sélectionné
-    AND ("Fin" IS NULL OR "Fin" >= jour);
+    SELECT array_agg(Nom) INTO plannings_ok
+    FROM Planning
+    WHERE Jours[jour_semaine] = true         -- le numéro du jour de la semaine donne la case du tableau à vérifier
+    AND (plannings_pasok IS NULL OR NOT Nom = ANY(plannings_pasok))  -- on exclut les plannings trouvés plus haut
+    AND (Debut IS NULL OR Debut <= jour)      -- il faut que le planning couvre le jour sélectionné
+    AND (Fin IS NULL OR Fin >= jour);
 
-    SELECT array_agg("Planning") INTO plannings_ajoutes  -- il faut trouver les exceptions qui ajoutent des trajets
-    FROM "Exception"
-    WHERE "DateDebut" <= jour
-    AND "DateFin" >= jour
-    AND "Ajoute" = true;
+    SELECT array_agg(Planning) INTO plannings_ajoutes  -- il faut trouver les exceptions qui ajoutent des trajets
+    FROM Exception
+    WHERE DateDebut <= jour
+    AND DateFin >= jour
+    AND Ajoute = true;
 
     SELECT array_cat(plannings_ok, plannings_ajoutes) INTO plannings_ok;  -- le résultat final est la concaténation des plannings exceptionnels et des plannings qui marchent ce jour de la semaine
 
@@ -66,7 +66,7 @@ END
 $BODY$;
 
 
-CREATE OR REPLACE FUNCTION "trouverTrajet"(
+CREATE OR REPLACE FUNCTION trouverTrajet(
 	VilleD varchar,
 	VilleA varchar,
 	jour date)
@@ -82,10 +82,10 @@ LANGUAGE 'plpgsql'
 AS $BODY$
 
 BEGIN
-	RETURN QUERY SELECT "Trajet"."Id", "NomGareDep", "HeureDepart", "NomGareArr", "HeureArrivee", "PrixSec", "PrixPrem", "TypeTrain"
-	FROM "Trajet" INNER JOIN "Ligne"
-	ON "Trajet"."Ligne" = "Ligne"."Id"
-    WHERE "Trajet"."Ligne" = ANY("trouverLigne"(VilleD, VilleA))       -- on se sert des fonctions précédentes pour afficher les trajets qui correspondent au souhait de l'utilisateur
-	AND "Trajet"."Planning" = ANY("trouverPlanning"(jour));
+	RETURN QUERY SELECT Trajet.Id, NomGareDep, HeureDepart, NomGareArr, HeureArrivee, PrixSec, PrixPrem, TypeTrain
+	FROM Trajet INNER JOIN Ligne
+	ON Trajet.Ligne = Ligne.Id
+    WHERE Trajet.Ligne = ANY(trouverLigne(VilleD, VilleA))       -- on se sert des fonctions précédentes pour afficher les trajets qui correspondent au souhait de l'utilisateur
+	AND Trajet.Planning = ANY(trouverPlanning(jour));
 END
 $BODY$;

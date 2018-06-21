@@ -1,0 +1,109 @@
+html
+body {
+    margin: 20px;
+    padding: 50px 100px;
+    font-family: "Lato", "Helvetica Neue", "Cantarell", sans-serif;
+    text-align: left;
+    Line-Height: 1.5;
+    background-image: url(image_de_fond.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 50%;
+    background-color: white
+}
+
+h1 {
+    font-size: 150%;
+    color: #696969;
+    background-color: transparent
+}
+
+h2 {
+    font-size: 120%;
+    color: gray;
+    background-color: transparent
+}
+
+h3 {
+    font-size: 80%;
+    color: silver;
+    background-color: transparent
+}
+p {
+    font-size: 100%;
+    background-color: transparent;
+    text-align: justify;
+    margin-left: 15px;
+    margin-right: 0
+}
+li {
+    font-size: 90%;
+    background-color: transparent;
+    margin-left: 50px;
+    margin-right: 50px
+}
+a:link {
+    font-size: 90%;
+    color: red;
+    background-color: transparent;
+    text-decoration: underline
+}
+a:visited {
+    font-size: 90%;
+    color: #ffa500;
+    background-color: transparent;
+    text-decoration: underline
+}
+a:hover {
+    font-size: 90%;
+    color: #ffd700;
+    background-color: transparent;
+    text-decoration: underline;
+}
+a:active, a:focus {
+    font-size: 90%;
+    color: #ffd700;
+    background-color: transparent;
+    text-decoration: underline
+}
+table {
+    border-collapse: collapse;
+    border-color: #696969;
+    border-style: solid;
+    border-width: 2px;
+    width: 70%
+}
+td, th {
+    font-size: 100%;
+    background-color: transparent;
+    border-color: silver;
+    border-style: solid;
+    border-width: 2px;
+    padding: 5px 10px;
+    text-align: right
+}
+td + td, th + th {
+    text-align: center
+}
+input {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    margin: 2px
+    border: 1px solid #b7b7b7;
+    border-radius: 13px / 7px;
+    box-shadow: 2px 2px 4px 1px rgba(0,0,0,0.1) inset;
+    box-shadow: 1px 1px 6px 2px rgba(0,0,0,0.1)
+}
+select-perso option:checked {
+    color: white;
+    background-color: red
+}
+button {
+    box-sizing: content-box;
+    padding: 5px 20px;
+    border-radius: 3px;
+    font-size: 90%
+}

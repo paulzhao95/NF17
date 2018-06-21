@@ -175,7 +175,7 @@ CREATE TABLE Billet
 
 CREATE OR REPLACE FUNCTION areExceptionsOverlaping(
 	DateDebu Date,
-	DateFin Date
+	DateFin_ Date
 )
 RETURNS int
 LANGUAGE 'plpgsql'

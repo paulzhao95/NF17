@@ -29,17 +29,17 @@
     }
     echo "</select></td></tr>";
 
-    echo "<tr><td>Ville d'arrivée'&nbsp:</td>";
+    echo "<tr><td>Ville d'arrivée&nbsp:</td>";
     //affichage de tous les élèves dans une liste déroulante
     echo "<td><select name='villeArr' size='4' required>";
     foreach ($liste_villes as $ville) {
-        echo "<option value='$ville'>$ville</option>";
+        echo "<option value='$ville[0]'>$ville[0]</option>";
     }
     echo "</select></td></tr>";
 
     echo "<tr><td>Date&nbsp:</td>";
 
-    echo "<td><input type='date' name='date'></td></tr><br>";
+    echo "<td><input type='date' name='date' required></td></tr><br>";
 
     echo "</table>";
 

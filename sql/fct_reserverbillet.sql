@@ -157,7 +157,7 @@ DECLARE
     max_places integer;
 	num_re integer;
     places_attribuees integer[];
-    place integer;
+    place_ integer;
     i integer;
 BEGIN
     IF cl = '1' THEN
@@ -196,13 +196,13 @@ BEGIN
     END IF;
 
 	FOR i IN 1..nbBillet LOOP                       -- pour chaque billet à prendre
-        SELECT INTO place floor(random()*max_places);  -- on tire un numéro de place inférieur à la borne sup
+        SELECT INTO place_ floor(random()*max_places);  -- on tire un numéro de place inférieur à la borne sup
 
-        WHILE EXISTS (SELECT Place FROM Billet WHERE Trajet = trajetID AND Date = dt AND Place = place) LOOP -- on vérifie qu'il n'est pas déjà attribué
-            SELECT INTO place floor(random()*max_places);
+        WHILE EXISTS (SELECT Place FROM Billet WHERE Trajet = trajetID AND Date = dt AND Place = place_) LOOP -- on vérifie qu'il n'est pas déjà attribué
+            SELECT INTO place_ floor(random()*max_places);
         END LOOP;
 
-        SELECT INTO places_attribuees array_append(places_attribuees, place);  -- on construit le tableau des places atribuées
+        SELECT INTO places_attribuees array_append(places_attribuees, place_);  -- on construit le tableau des places atribuées
 
 		INSERT INTO Billet (Trajet, Date, Classe, Place, Annule, Reservation) VALUES
         (trajetID, dt, cl, places_attribuees[i], false, num_re);  -- on insère les valeurs dans la table

@@ -37,20 +37,22 @@
       echo "<td>$train[1]</td>";
       echo "<td>$train[3]</td>";
       echo "<td>$train[2] - $train[4]</td>";
-      echo "<td>$train[5]<br><input type='radio' name='trajet_choisi' value='$train[0]+$date+2'></td>";
-      echo "<td>$train[6]<br><input type='radio' name='trajet_choisi' value='$train[0]+$date+1'</td></tr>";
+      echo "<td>$train[5]<br><input type='radio' name='trajet_choisi' value='$train[0]+$date+2' required></td>";
+      if ($train[6] != NULL) {
+        echo "<td>$train[6]<br><input type='radio' name='trajet_choisi' value='$train[0]+$date+1' required></td></tr>";
+      }
     }
 
     echo "</table>";
 
-    echo "<br><br>Je veux prendre <input type='number' name='nb_billet' min='1'> billets pour l'usager numéro* <input type='text' name='id_voy'>.";
-    echo "<br>Je veux une assurance pour ce voyage <input type='checkbox' name='assurance' value='oui' checked>";
-    echo "<br>Je paierai en espèces <input type='radio' name='paiement' value='esp'> en chèque <input type='radio' name='paiement' value='cheque'> en carte bancaire<input type='radio' name='paiement' value='cb'><br>";
+    echo "<p>Je veux prendre <input type='number' name='nb_billet' min='1' required> billets pour l'usager numéro* <input type='text' name='id_voy'>.</p>";
+    echo "<p>Je veux une assurance pour ce voyage <input type='checkbox' name='assurance' value='oui' checked></p>";
+    echo "<p>Je paierai en espèces <input type='radio' name='paiement' value='especes' required> en chèque <input type='radio' name='paiement' value='cheque' required> en carte bancaire<input type='radio' name='paiement' value='carte_bleue' required></p>";
 
-    echo "<br><input type='submit' value='Effectuer une réservation'>";
+    echo "<input type='submit' value='Effectuer une réservation'>";
     echo "</form>";
 
-    echo "<br><br><br>* Pour trouver votre numéro d'usager, cliquez sur <a href='chercher_usager.php' target='contenu'>accéder à mon compte</a>.";
+    echo "<p>* Pour trouver votre numéro d'usager, cliquez sur <a href='chercher_usager.php'>accéder à mon compte</a>. Si vous n'en avez pas, <a href='creer_compte.html'>créez-en un</a>.</p>";
 
     ?>
 </body>

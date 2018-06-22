@@ -89,3 +89,6 @@ INSERT INTO Billet (Trajet, Date, Classe, Place, Annule, Reservation) VALUES
 (5, '2018-07-02', '1', 41, false, 4),
 (6, '2018-02-08', '2', 31, false, 4)
 ;
+
+INSERT INTO Gerants (login, mdp) VALUES
+('admin','123456789');

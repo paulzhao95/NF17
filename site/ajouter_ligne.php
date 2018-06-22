@@ -7,7 +7,7 @@
 
 <body>
 	<form action='ajout_ligne.php' method='post'>
-		Ville de départ : <select name='gare_dep'>
+		Gare de départ : <select name='gare_dep'>
 		<?php
 			include "../model/db.php";
 			include '../model/auth.php';
@@ -25,7 +25,7 @@
 		
 		?>
 		</select><br><br>
-		Ville d'arrivée : <select name='gare_arr'>
+		Gare d'arrivée : <select name='gare_arr'>
 		<?php
 			include "../model/db.php";
 			include '../model/auth.php';

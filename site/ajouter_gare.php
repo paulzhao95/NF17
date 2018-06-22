@@ -7,8 +7,8 @@
 
 <body>
 	<form action='ajout_gare.php' method='post'>
-		Nom de la gare : <input type='text' name='nom'></input> <br><br>
-		Adresse : Numero <input type='number' min='0' name='numero_rue'></input> Rue <input type='text' name='rue'></input><br><br>
+		Nom de la gare : <input type='text' name='nom' required></input> <br><br>
+		Adresse : Numero <input type='number' min='0' name='numero_rue' required></input> Rue <input type='text' name='rue' required></input><br><br>
 		Ville : <select name='ville'>
 		<?php
 			include "../model/db.php";

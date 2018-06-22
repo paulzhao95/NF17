@@ -9,8 +9,23 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     echo "<a href='../site/menu_scf.php'> Retour au menu </a>";
     exit;
 } else {
-    echo "<p>Bonjour, {$_SERVER['PHP_AUTH_USER']}.</p>";
-    echo "<p>Votre mot de passe est {$_SERVER['PHP_AUTH_PW']}.</p>";
+			include "../model/db.php";
+ 
+				
+				$sql =  "SELECT mdp FROM Gerants WHERE login = '".$_SERVER['PHP_AUTH_USER']."';";
+				
+				$query = $db->query($sql,PDO::FETCH_ASSOC);
+				$row = $query->fetch($query);
+				//$query->debugDumpParams();
+				if($row["mdp"] == $_SERVER['PHP_AUTH_PW'])
+				{
+					echo "Problème lors de l'identification.<br><br><a href='../site/menu_scf.php'> Retour au menu </a>";
+					exit;
+				}
+				else
+				{
+					echo "<p>Connecté en tant que {$_SERVER['PHP_AUTH_USER']}</p><br><br>";
+				}
 }
 
 ?>

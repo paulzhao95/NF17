@@ -172,6 +172,13 @@ CREATE TABLE Billet
 	CONSTRAINT Id_diff_0 CHECK (Id <> 0)
 );
 
+CREATE TABLE Gerants
+{
+	login varchar NOT NULL PRIMARY KEY,
+	mdp varchar NOT NULL
+};
+
+
 
 CREATE OR REPLACE FUNCTION areExceptionsOverlaping(
 	DateDebu Date,

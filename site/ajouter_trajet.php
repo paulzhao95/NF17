@@ -25,8 +25,8 @@
 		
 		?>
 		</select><br><br>
-		Heure du départ : <input name='heured' type='number' min='0' max='23'></input>:<input name='minuted' type='number' min='0' max='59'></input>:<input name='seconded' type='number' min='0' max='59'></input><br><br>
-		Heure d'arrivée : <input name='heurea' type='number' min='0' max='23'></input>:<input name='minutea' type='number' min='0' max='59'></input>:<input name='secondea' type='number' min='0' max='59'></input><br><br>
+		Heure du départ : <input name='heured' type='number' min='0' max='23' required></input>:<input name='minuted' type='number' min='0' max='59' required></input>:<input name='seconded' type='number' min='0' max='59' required></input><br><br>
+		Heure d'arrivée : <input name='heurea' type='number' min='0' max='23' required></input>:<input name='minutea' type='number' min='0' max='59' required></input>:<input name='secondea' type='number' min='0' max='59' required></input><br><br>
 		Prix première classe (si existante sinon 0) : <input type='number' name='prixprem' min='0' step='0.01'> </input><br><br>
 		Prix seconde classe : <input type='number' name='prixsec' min='0' step='0.01'> </input><br><br>
 		Planning : <select name='planning'>

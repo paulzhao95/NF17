@@ -6,6 +6,9 @@
 </head>
 
 <body>
+	<?php
+	include '../model/auth.php';
+	?>
 	<form action='ajout_gare.php' method='post'>
 
 		Nom de la gare&nbsp: <input type='text' name='nom' required></input> <br><br>
@@ -13,8 +16,6 @@
 		Ville&nbsp: <select name='ville'>
 		<?php
 			include "../model/db.php";
-			include '../model/auth.php';
-
 
 				$sql =  "SELECT nom FROM ville ORDER BY nom;";
 

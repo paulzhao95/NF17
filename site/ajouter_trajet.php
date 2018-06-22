@@ -6,11 +6,13 @@
 </head>
 
 <body>
+<?php
+	include '../model/auth.php';
+	?>
 	<form action='ajout_trajet.php' method='post'>
 		Ligne&nbsp: <select name='ligne'>
 		<?php
 			include "../model/db.php";
-			include '../model/auth.php';
 
 
 				$sql =  "SELECT id,NomGareDep,VilleGareDep,NomGareArr,VilleGareArr,TypeTrain FROM ligne;";
@@ -34,7 +36,6 @@
 
 		<?php
 			include "../model/db.php";
-			include '../model/auth.php';
 
 
 				$sql =  "SELECT nom FROM planning;";

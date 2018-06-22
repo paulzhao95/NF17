@@ -173,10 +173,10 @@ CREATE TABLE Billet
 );
 
 CREATE TABLE Gerants
-{
+(
 	login varchar NOT NULL PRIMARY KEY,
 	mdp varchar NOT NULL
-};
+);
 
 
 

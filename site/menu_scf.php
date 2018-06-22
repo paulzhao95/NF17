@@ -14,7 +14,7 @@
 	<a href="ajouter_ligne.php" target="contenu">Créer une ligne</a><br>
 	<a href="ajouter_trajet.php" target="contenu">Ajouter un trajet</a><br><br>
 
-	<a href="ajouter_train.php" target="contenu">Créer un nouveau type de train</a><br><br>
+	<a href="ajouter_typeTrain.php" target="contenu">Créer un nouveau type de train</a><br><br>
 
 	<a href="ajouter_planning.php" target="contenu">Créer un planning</a><br>
 	<a href="ajouter_exception.php" target="contenu">Créer des dates d'exception</a><br><br>

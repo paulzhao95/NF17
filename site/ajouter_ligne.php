@@ -6,11 +6,13 @@
 </head>
 
 <body>
+<?php
+	include '../model/auth.php';
+	?>
 	<form action='ajout_ligne.php' method='post'>
 		Gare de départ&nbsp: <select name='gare_dep'>
 		<?php
 			include "../model/db.php";
-			include '../model/auth.php';
 
 
 				$sql =  "SELECT nom,ville FROM gare ORDER BY nom;";
@@ -28,7 +30,6 @@
 		Gare d'arrivée&nbsp: <select name='gare_arr'>
 		<?php
 			include "../model/db.php";
-			include '../model/auth.php';
 
 
 				$sql =  "SELECT nom,ville FROM gare ORDER BY nom;";
@@ -46,7 +47,6 @@
 		Type de train&nbsp: <select name='type'>
 		<?php
 			include "../model/db.php";
-			include '../model/auth.php';
 
 
 				$sql =  "SELECT nom FROM typeTrain ORDER BY nom;";

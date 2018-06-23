@@ -6,6 +6,7 @@
 </head>
 
 <body>
+    <h1>Billets réservés</h1>
     <?php
     //récupération des informations
     $usager = $_POST['id_voy'];
@@ -22,7 +23,7 @@
     if ($billets == null) { //s'il n'y a pas de résultat pour cette recherche
         echo "<p>Vous n'avez aucun voyage à venir.</p>";
     } else {
-        echo "<p>Voici la liste des trajets passés ou à venir associés à votre compte. .</p>";
+        echo "<p>Voici la liste des trajets passés ou à venir associés à votre compte.</p>";
         echo "<table><tr><td>Date du voyage</td>";
         echo "<td>Numéro de train</td>";
         echo "<td>Classe</td>";

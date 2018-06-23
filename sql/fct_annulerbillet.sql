@@ -104,3 +104,38 @@ BEGIN
     RETURN montant;
 END
 $BODY$;
+
+CREATE OR REPLACE FUNCTION supprimerVoyageur(
+    idVoyageur integer)
+RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+    billets integer[];
+    i_billet integer;
+    montant numeric;
+BEGIN
+    SELECT array_agg(Billet.Id) INTO billets               -- on récupère les billets pas encore consommés de l'utilisateur
+    FROM Billet INNER JOIN Reservation
+    ON Billet.Reservation = Reservation.Id
+    WHERE Voyageur = idVoyageur
+    AND DATE >= CURRENT_DATE
+    AND Annule = false;
+
+    FOREACH i_billet IN ARRAY billets LOOP                    -- on les annule tous pour le rembourser
+        SELECT * INTO montant FROM annulerBillet(i_billet);
+    END LOOP;
+
+    DELETE FROM Billet USING Reservation                    -- puis on les supprime de la table
+    WHERE Billet.Reservation = Reservation.Id
+    AND Reservation.Voyageur = idVoyageur;
+
+    DELETE FROM Reservation                                 -- on supprime les réservations
+    WHERE Voyageur = idVoyageur;
+
+    DELETE FROM Voyageur                                    -- et on supprime l'utilisateur
+    WHERE Id = idVoyageur;
+
+    RETURN true;
+END
+$BODY$;

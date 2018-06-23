@@ -6,6 +6,7 @@
 </head>
 
 <body>
+    <h1>Billets à annuler</h1>
     <?php
     //récupération des informations
     $usager = $_POST['id_voy'];

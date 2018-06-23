@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Trains correspondants à la recherche</h1>
+    <h1>Confirmation de la réservation</h1>
     <?php
     //récupération des informations
     $id_voyageur = $_POST['id_voy'];

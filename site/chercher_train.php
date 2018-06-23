@@ -13,7 +13,7 @@
     global $db;
 
     //récupération des gares
-    $tb_ville = $db->query('SELECT Nom FROM Ville');
+    $tb_ville = $db->query('SELECT Nom FROM Ville ORDER BY Nom');
     $liste_villes = $tb_ville->fetchAll();
 
     //création d'un formulaire
@@ -23,7 +23,7 @@
 
     echo "<tr><td>Ville de départ&nbsp:</td>";
     //affichage de tous les élèves dans une liste déroulante
-    echo "<td><select name='villeDep' size='4' required>";
+    echo "<td><select name='villeDep' required>";
     foreach ($liste_villes as $ville) {
         echo "<option value='$ville[0]'>$ville[0]</option>";
     }
@@ -31,7 +31,7 @@
 
     echo "<tr><td>Ville d'arrivée&nbsp:</td>";
     //affichage de tous les élèves dans une liste déroulante
-    echo "<td><select name='villeArr' size='4' required>";
+    echo "<td><select name='villeArr' required>";
     foreach ($liste_villes as $ville) {
         echo "<option value='$ville[0]'>$ville[0]</option>";
     }

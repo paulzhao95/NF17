@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Trains correspondants à la recherche</h1>
+    <h1>Confirmation de la réservation</h1>
     <?php
     //récupération des informations
     $id_voyageur = $_POST['id_voy'];
@@ -22,11 +22,10 @@
     $paiement .= "'";
 
     $nb_billet = $_POST['nb_billet'];
-    if ($_POST['assurance'] != NULL) {
-      $assurance = 'true';
-    }
-    else {
-      $assurance = 'false';
+    if (isset($_POST['assurance'])) {
+        $assurance = 'true';
+    } else {
+        $assurance = 'false';
     }
 
 
@@ -38,19 +37,17 @@
     $voyageur = $db->query("SELECT Prenom, Nom FROM Voyageur WHERE Id = $id_voyageur");
     $nom = $voyageur->fetch();
 
-    if ($nom == NULL) {
-      echo "<p>Aucun utilisateur dans notre base n'a ce nom. <a href='chercher_usager.html' target='contenu'>Vérifiez votre numéro</a> ou <a href='creer_compte.html' target='contenu'>créez un compte</a>.</p>";
-    }
+    if ($nom == null) {
+        echo "<p>Aucun utilisateur dans notre base n'a ce numéro. <a href='chercher_usager.html' target='contenu'>Vérifiez votre numéro</a> ou <a href='creer_compte.html' target='contenu'>créez un compte</a>.</p>";
+    } else {
+        $tb_billets = $db->query("SELECT * FROM reserverBillet($nb_billet, $id_voyageur, $assurance, $paiement, $trajet, '$date', '$classe')");
+        $liste_billets = $tb_billets->fetch();
 
-    else {
-      $tb_billets = $db->query("SELECT * FROM reserverBillet($nb_billet, $id_voyageur, $assurance, $paiement, $trajet, '$date', '$classe')");
-      $liste_billets = $tb_billets->fetch();
-
-      echo "<p>$nb_billet billet(s) a/ont bien été reservé(s) au nom de $nom[0] $nom[1]. Place(s)&nbsp:";
-      foreach ($liste_billets as $billet) {
-        echo " $billet[0]";
-      }
-      echo ".</p>";
+        echo "<p>$nb_billet billet(s) a/ont bien été reservé(s) au nom de $nom[0] $nom[1]. Place(s)&nbsp:";
+        foreach ($liste_billets as $billet) {
+            echo " $billet";
+        }
+        echo ".</p>";
     }
 
     ?>

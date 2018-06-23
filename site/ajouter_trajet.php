@@ -7,25 +7,25 @@
 
 <body>
 <?php
-	include '../model/auth.php';
-	?>
+    include '../model/auth.php';
+    ?>
 	<form action='ajout_trajet.php' method='post'>
 		Ligne&nbsp: <select name='ligne'>
 		<?php
-			include "../model/db.php";
+            include "../model/db.php";
 
 
-				$sql =  "SELECT id,NomGareDep,VilleGareDep,NomGareArr,VilleGareArr,TypeTrain FROM ligne;";
+                $sql =  "SELECT id,NomGareDep,VilleGareDep,NomGareArr,VilleGareArr,TypeTrain FROM ligne;";
 
-				$query = $db->query($sql);
+                $query = $db->query($sql);
 
-				//$query->debugDumpParams();
+                //$query->debugDumpParams();
 
-    		foreach($query as $row) {
-        echo "<option value='".$row["id"]."'>".$row["typetrain"]." de ".$row["nomgaredep"]." de la ville de ".$row["villegaredep"]." vers ".$row["nomgarearr"]." de la ville de ".$row["villegarearr"]."</option> <br>";
-  			}
+            foreach ($query as $row) {
+                echo "<option value='".$row["id"]."'>".$row["typetrain"]." de ".$row["nomgaredep"]." de la ville de ".$row["villegaredep"]." vers ".$row["nomgarearr"]." de la ville de ".$row["villegarearr"]."</option> <br>";
+            }
 
-		?>
+        ?>
 		</select><br><br>
 
 		Heure du départ&nbsp: <input name='heured' type='number' min='0' max='23' required></input>:<input name='minuted' type='number' min='0' max='59' required></input>:<input name='seconded' type='number' min='0' max='59' required></input><br><br>
@@ -35,20 +35,20 @@
 		Planning&nbsp: <select name='planning'>
 
 		<?php
-			include "../model/db.php";
+            include "../model/db.php";
 
 
-				$sql =  "SELECT nom FROM planning;";
+                $sql =  "SELECT nom FROM planning;";
 
-				$query = $db->query($sql);
+                $query = $db->query($sql);
 
-				//$query->debugDumpParams();
+                //$query->debugDumpParams();
 
-    		foreach($query as $row) {
-        echo "<option value='".$row["nom"]."'>".$row["nom"]."</option> <br>";
-  			}
+            foreach ($query as $row) {
+                echo "<option value='".$row["nom"]."'>".$row["nom"]."</option> <br>";
+            }
 
-		?>
+        ?>
 		</select><br><br>
 		<input type='submit' name='squalala'></input>
 

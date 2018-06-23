@@ -7,59 +7,59 @@
 
 <body>
 <?php
-	include '../model/auth.php';
-	?>
+    include '../model/auth.php';
+    ?>
 	<form action='ajout_ligne.php' method='post'>
 		Gare de départ&nbsp: <select name='gare_dep'>
 		<?php
-			include "../model/db.php";
+            include "../model/db.php";
 
 
-				$sql =  "SELECT nom,ville FROM gare ORDER BY nom;";
+                $sql =  "SELECT nom,ville FROM gare ORDER BY nom;";
 
-				$query = $db->query($sql);
+                $query = $db->query($sql);
 
-				//$query->debugDumpParams();
+                //$query->debugDumpParams();
 
-    		foreach($query as $row) {
-        echo "<option value='".$row["nom"].";".$row["ville"]."'>".$row["nom"]." de la ville de ".$row["ville"]."</option> <br>";
-  			}
+            foreach ($query as $row) {
+                echo "<option value='".$row["nom"].";".$row["ville"]."'>".$row["nom"]." de la ville de ".$row["ville"]."</option> <br>";
+            }
 
-		?>
+        ?>
 		</select><br><br>
 		Gare d'arrivée&nbsp: <select name='gare_arr'>
 		<?php
-			include "../model/db.php";
+            include "../model/db.php";
 
 
-				$sql =  "SELECT nom,ville FROM gare ORDER BY nom;";
+                $sql =  "SELECT nom,ville FROM gare ORDER BY nom;";
 
-				$query = $db->query($sql);
+                $query = $db->query($sql);
 
-				//$query->debugDumpParams();
+                //$query->debugDumpParams();
 
-    		foreach($query as $row) {
-        echo "<option value='".$row["nom"].";".$row["ville"]."'>".$row["nom"]." de la ville de ".$row["ville"]."</option> <br>";
-  			}
+            foreach ($query as $row) {
+                echo "<option value='".$row["nom"].";".$row["ville"]."'>".$row["nom"]." de la ville de ".$row["ville"]."</option> <br>";
+            }
 
-		?>
+        ?>
 		</select><br><br>
 		Type de train&nbsp: <select name='type'>
 		<?php
-			include "../model/db.php";
+            include "../model/db.php";
 
 
-				$sql =  "SELECT nom FROM typeTrain ORDER BY nom;";
+                $sql =  "SELECT nom FROM typeTrain ORDER BY nom;";
 
-				$query = $db->query($sql);
+                $query = $db->query($sql);
 
-				//$query->debugDumpParams();
+                //$query->debugDumpParams();
 
-    		foreach($query as $row) {
-        echo "<option value='".$row["nom"]."'>".$row["nom"]."</option> <br>";
-  			}
+            foreach ($query as $row) {
+                echo "<option value='".$row["nom"]."'>".$row["nom"]."</option> <br>";
+            }
 
-		?>
+        ?>
 		</select><br><br>
 		<input type='submit' name='squalala'></input>
 

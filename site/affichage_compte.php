@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Creation d'un compte</title>
+    <title>Affichage des informations de l'usager</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link href="style.css" rel="stylesheet" media="all" type="text/css">
 </head>
@@ -19,11 +19,9 @@
     $result = $db->query("SELECT Id, Adresse, TypeVoyageur, NumeroCarte FROM Voyageur WHERE Nom LIKE '$nom' AND Prenom LIKE '$prenom'");
     $voyageurs = $result->fetchAll();
 
-    if ($voyageurs == NULL) { //s'il n'y a pas de résultat pour cette recherche
+    if ($voyageurs == null) { //s'il n'y a pas de résultat pour cette recherche
         echo "<p>Vous n'êtes pas dans notre base de données. <a href='creer_compte.html'>Créez un compte</a>.</p>";
-    }
-
-    else {
+    } else {
         echo "<p>Voici le résultat de la recherche $prenom $nom&nbsp:</p>";
         echo "<table><tr><td>Id</td>";
         echo "<td>Adresse</td>";

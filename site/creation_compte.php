@@ -23,7 +23,7 @@
 
     //on cherche si la ville existe
     $existe = $db->query("SELECT * FROM Ville WHERE Nom = '$ville'");
-    if ($existe->fetch() == NULL) {
+    if ($existe->fetch() == null) {
         //on ajoute dans la base
         $db->query("INSERT INTO ville (nom,cp,zonehoraire) VALUES ('$ville', $cp, 2)");
     }
@@ -32,7 +32,7 @@
     $result = $db->query("SELECT Id FROM Voyageur WHERE Nom LIKE '$nom' AND Prenom LIKE '$prenom' AND NumeroTel = $tel");
     $homonyme = $result->fetch();
 
-    if ($homonyme != NULL && $reponse=="blblb") { //s'il y a bien un résultat pour cette recherche
+    if ($homonyme != null && $reponse=="blblb") { //s'il y a bien un résultat pour cette recherche
         echo "<p>Il y a une personne avec les mêmes nom, prénom et numéro de téléphone dans notre base. Son numéro est le $homonyme[0]. Est-ce vous&nbsp?</p>";
 
         echo "<form action='creation_compte.php' method='POST'>";
@@ -48,9 +48,7 @@
         echo "<input type='hidden' name ='nom_rue' value=$rue>";
 
         echo "<br><input type='submit' value='Valider'>";
-    }
-
-    else if ($reponse != "oui") {
+    } elseif ($reponse != "oui") {
         $result = $db->query("INSERT INTO Voyageur (Nom, Prenom, NumeroTel, NumeroCarte, Ville, Adresse, TypeVoyageur) VALUES ('$nom', '$prenom', '$tel', NULL, '$ville', ($num, '$rue'), 'Occasionnel') RETURNING Id");
         $id = $result->fetch();
         echo "<p>$prenom $nom votre compte voyageur a bien été créé. Le numéro $id[0] vous a été attribué.</p>";

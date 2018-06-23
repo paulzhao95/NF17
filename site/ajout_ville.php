@@ -7,10 +7,10 @@
 
 <body>
 	<?php
-		include "../model/db.php";
-		include '../model/auth.php';
-		$db->query("INSERT INTO ville (nom,cp,zonehoraire) VALUES ('".$_POST["nom"]."',".$_POST["code_postal"].",".$_POST["zone_horaire"].")");
-	?>
+        include "../model/db.php";
+        include '../model/auth.php';
+        $db->query("INSERT INTO ville (nom,cp,zonehoraire) VALUES ('".$_POST["nom"]."',".$_POST["code_postal"].",".$_POST["zone_horaire"].")");
+    ?>
 	<a href='ajouter_ville.php'> Retour </a>
 </body>
 </html>

@@ -12,7 +12,9 @@
         $g1 = explode(';', $_POST['gare_dep']);
         $g2 = explode(';', $_POST['gare_arr']);
         $db->query("INSERT INTO ligne (NomGareDep,VilleGareDep,NomGareArr,VilleGareArr,TypeTrain) VALUES ('".$g1[0]."','".$g1[1]."','".$g2[0]."','".$g2[1]."','".$_POST["type"]."')");
+
+        echo "<h1>Une ligne a bien été créée entre $g1[0] et $g2[0]</h1>";
     ?>
-	<a href='ajouter_ligne.php'>Retour</a>
+	<p><a href='ajouter_ligne.php'>Retour</a></p>
 </body>
 </html>

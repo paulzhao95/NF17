@@ -21,19 +21,12 @@
     require_once('../model/db.php');
     global $db;
 
-    //on cherche si la ville existe
-    $existe = $db->query("SELECT * FROM Ville WHERE Nom = '$ville'");
-    if ($existe->fetch() == null) {
-        //on ajoute dans la base
-        $db->query("INSERT INTO ville (nom,cp,zonehoraire) VALUES ('$ville', $cp, 2)");
-    }
-
     //on vérifie si le compte existe déjà
-    $result = $db->query("SELECT Id FROM Voyageur WHERE Nom LIKE '$nom' AND Prenom LIKE '$prenom' AND NumeroTel = $tel");
+    $result = $db->query("SELECT Id FROM Voyageur WHERE Nom LIKE '$nom' AND Prenom LIKE '$prenom'");
     $homonyme = $result->fetch();
 
     if ($homonyme != null && $reponse=="blblb") { //s'il y a bien un résultat pour cette recherche
-        echo "<p>Il y a une personne avec les mêmes nom, prénom et numéro de téléphone dans notre base. Son numéro est le $homonyme[0]. Est-ce vous&nbsp?</p>";
+        echo "<p>Il y a une personne avec les mêmes nom et prénom dans notre base. Son numéro est le $homonyme[0]. Est-ce vous&nbsp?</p>";
 
         echo "<form action='creation_compte.php' method='POST'>";
 

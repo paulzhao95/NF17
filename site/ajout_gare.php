@@ -10,7 +10,9 @@
         include "../model/db.php";
         include '../model/auth.php';
         $db->query("INSERT INTO gare (nom,adresse,ville) VALUES ('".$_POST['nom']."',(".$_POST['numero_rue'].",'".$_POST['rue']."'),'".$_POST['ville']."')");
+
+        echo "<h1>La gare a bien été ajoutée dans la base</h1>";
     ?>
-	<a href='ajouter_gare.php'>Retour</a>
+	<p><a href='ajouter_gare.php'>Retour</a></p>
 </body>
 </html>

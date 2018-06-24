@@ -6,6 +6,9 @@
 </head>
 
 <body>
+    <?php
+    include '../model/auth.php';
+    ?>
 
 	<a href="accueil.html" target="contenu">Accueil</a><br><br>
 

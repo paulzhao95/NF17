@@ -52,7 +52,7 @@
     echo "<input type='submit' value='Effectuer une réservation'>";
     echo "</form>";
 
-    echo "<p>* Pour trouver votre numéro d'usager, cliquez sur <a href='chercher_compte.php'>accéder à mon compte</a>. Si vous n'en avez pas, <a href='creer_compte.html'>créez-en un</a>.</p>";
+    echo "<p>* Pour trouver votre numéro d'usager, cliquez sur <a href='chercher_compte.html'>accéder à mon compte</a>. Si vous n'en avez pas, <a href='creer_compte.html'>créez-en un</a>.</p>";
 
     ?>
 </body>

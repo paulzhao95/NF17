@@ -38,18 +38,15 @@
     $nom = $voyageur->fetch();
 
     if ($nom == null) {
-        echo "<p>Aucun utilisateur dans notre base n'a ce numéro. <a href='chercher_usager.html' target='contenu'>Vérifiez votre numéro</a> ou <a href='creer_compte.html' target='contenu'>créez un compte</a>.</p>";
+        echo "<p>Aucun utilisateur dans notre base n'a ce numéro. <a href='chercher_compte.html' target='contenu'>Vérifiez votre numéro</a> ou <a href='creer_compte.html' target='contenu'>créez un compte</a>.</p>";
     } else {
         $tb_billets = $db->query("SELECT * FROM reserverBillet($nb_billet, $id_voyageur, $assurance, $paiement, $trajet, '$date', '$classe')");
         $liste_billets = $tb_billets->fetch();
 
-        echo "<p>$nb_billet billet(s) a/ont bien été reservé(s) au nom de $nom[0] $nom[1]. Place(s)&nbsp:";
-        foreach ($liste_billets as $billet) {
-            echo " $billet";
-        }
-        echo ".</p>";
+        echo "<p>$nb_billet billet(s) a/ont bien été reservé(s) au nom de $nom[0] $nom[1]. Place(s)&nbsp: $liste_billets[0].</p>";
     }
 
     ?>
+    <p><a href='accueil.html'>Retour</a></p>
 </body>
 </html>

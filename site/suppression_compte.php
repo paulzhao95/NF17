@@ -26,6 +26,6 @@
     }
     ?>
 
-<br><a href='accueil.html'>Retour</a>
+<p><a href='accueil.html'>Retour</a></p>
 </body>
 </html>

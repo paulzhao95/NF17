@@ -50,7 +50,9 @@ INSERT INTO Planning (Nom, Jours, Debut, Fin) VALUES
 INSERT INTO Exception (Nom, Ajoute, Planning, DateDebut, DateFin) VALUES
 ('Vacances printemps 2018', true, 'Week end', '2018-04-14', '2018-04-29'),
 ('Vacances été 2018', true, 'Week end', '2018-06-30', '2018-09-01'),
-('Grève mai 2018', false, 'Jours ouvres', '2018-05-01', '2018-05-08')
+('Grève mai 2018', false, 'Jours ouvres', '2018-05-01', '2018-05-08'),
+('Grève juin 2018', false, 'Jours ouvres', '2018-06-25', '2018-06-29'),
+('Grève juillet 2018', false, 'Jours ouvres', '2018-07-03', '2018-07-17')
 ;
 
 INSERT INTO Trajet (Ligne, HeureDepart, HeureArrivee, PrixPrem, PrixSec, Planning) VALUES
@@ -77,15 +79,15 @@ INSERT INTO Reservation (Voyageur, Assurance, MoyenPaiement) VALUES
 ;
 
 INSERT INTO Billet (Trajet, Date, Classe, Place, Annule, Reservation) VALUES
-(1, '2018-06-22', '2', 8, false, 1),
-(1, '2018-06-22', '2', 9, false, 1),
-(1, '2018-06-22', '2', 10, false, 1),
-(1, '2018-06-22', '2', 11, false, 1),
-(1, '2018-06-22', '2', 23, false, 2),
-(1, '2018-06-22', '2', 24, false, 2),
-(1, '2018-06-22', '2', 104, false, 3),
-(1, '2018-06-22', '2', 105, false, 3),
-(1, '2018-06-22', '2', 106, false, 3),
+(1, '2018-06-28', '2', 8, false, 1),
+(1, '2018-06-28', '2', 9, false, 1),
+(1, '2018-06-28', '2', 10, false, 1),
+(1, '2018-06-28', '2', 11, false, 1),
+(1, '2018-06-28', '2', 23, false, 2),
+(1, '2018-06-28', '2', 24, false, 2),
+(1, '2018-06-28', '2', 104, false, 3),
+(1, '2018-06-28', '2', 105, false, 3),
+(1, '2018-06-28', '2', 106, false, 3),
 (5, '2018-07-02', '1', 41, false, 4),
 (6, '2018-02-08', '2', 31, false, 4)
 ;
